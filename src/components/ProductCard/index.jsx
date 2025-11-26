@@ -1,10 +1,11 @@
+import { useCategory } from '@/hooks/useCategories'
 import { currency } from '@/utils'
-import React from 'react'
 import { Skeleton } from '../Skeleton'
 
-export const ProductCard = ({ images, name, price, real_price, slug, discount_rate, review_count, rating_average }) => {
+export const ProductCard = ({ images, categories, name, price, real_price, slug, discount_rate, review_count, rating_average }) => {
     const img1 = images?.[0]?.thumbnail_url
     const img2 = images?.[1] ? images?.[1]?.thumbnail_url : img1
+    const category = useCategory(categories)
     return (
         <div className="col-6 col-md-4">
             {/* Card */}
@@ -40,7 +41,9 @@ export const ProductCard = ({ images, name, price, real_price, slug, discount_ra
                 <div className="card-body px-0">
                     {/* Category */}
                     <div className="card-product-category font-size-xs">
-                        <a className="text-muted" href="shop.html">Shoes</a>
+                        {
+                            category && <a className="text-muted" href="shop.html">{category.title}</a>
+                        }
                     </div>
                     {/* Title */}
                     <div className="card-product-title font-weight-bold">
@@ -66,7 +69,7 @@ export const ProductCard = ({ images, name, price, real_price, slug, discount_ra
                                 <span className="text-primary sale">{currency(real_price)}</span>
                                 <span className="font-size-xs text-gray-350 text-decoration-line-through ml-1">{currency(price)}</span>
                             </> : <>
-                                <span className="font-size-xs text-gray-350 text-decoration-line-through ml-1">{currency(real_price)}</span>
+                                <span className="text-xl flex h-full items-end">{currency(real_price)}</span>
                             </>
                         }
                     </div>

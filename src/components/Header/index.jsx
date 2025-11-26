@@ -1,8 +1,13 @@
-import React from 'react'
+import { PATH } from '@/config'
+import React, { useState } from 'react'
+import { Link } from 'react-router-dom'
+import { SearchDrawer } from '../SearchDrawer'
 
 export const Header = () => {
+    const [openSearchDrawer, setOpenSearchDrawer] = useState(false)
     return (
         <>
+            <SearchDrawer open={openSearchDrawer} onClose={() => setOpenSearchDrawer(false)} />
             <div>
                 {/* NAVBAR */}
                 <div className="navbar navbar-topbar navbar-expand-xl navbar-light bg-light">
@@ -112,10 +117,10 @@ export const Header = () => {
                             {/* Nav */}
                             <ul className="navbar-nav mx-auto">
                                 <li className="nav-item">
-                                    <a className="nav-link" href="./">Trang chủ</a>
+                                    <Link className="nav-link" to={PATH.Home}>Trang chủ</Link>
                                 </li>
                                 <li className="nav-item">
-                                    <a className="nav-link" href="./shop.html">Sản phẩm</a>
+                                    <Link className="nav-link" to={PATH.Product}>Sản phẩm</Link>
                                 </li>
                                 <li className="nav-item dropdown">
                                     <a className="nav-link" href="./shop.html">Laptop</a>
@@ -130,7 +135,10 @@ export const Header = () => {
                             {/* Nav */}
                             <ul className="navbar-nav flex-row">
                                 <li className="nav-item">
-                                    <a className="nav-link" data-toggle="modal" href="#modalSearch">
+                                    <a className="nav-link" data-toggle="modal" href="#modalSearch" onClick={(ev) => {
+                                        ev.preventDefault()
+                                        setOpenSearchDrawer(true)
+                                    }}>
                                         <i className="fe fe-search" />
                                     </a>
                                 </li>

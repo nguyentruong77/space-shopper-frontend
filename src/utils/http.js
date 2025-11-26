@@ -1,5 +1,5 @@
 import axios from "axios";
-import { getToken, setToken } from "../utils/token";
+import { getToken, setToken } from "./token";
 //import { authService } from "@/services/auth.service";
 
 export const COURSE_API = import.meta.env.VITE_COURSE_API;
