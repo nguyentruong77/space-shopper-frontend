@@ -1,5 +1,6 @@
 import axios from "axios";
 import { getToken, setToken } from "./token";
+import { authService } from "@/services/auth";
 //import { authService } from "@/services/auth.service";
 
 export const COURSE_API = import.meta.env.VITE_COURSE_API;
@@ -14,17 +15,18 @@ http.interceptors.response.use(
     return res.data ?? res;
   },
   async (error) => {
-    // if (
-    //   error.response.status === 403 &&
-    //   error.response.data.status_code === "TOKEN_EXPIRED"
-    // ) {
-    //   const token = getToken();
-    //   const res = await authService.refreshToken({
-    //     refreshToken: token.refreshToken,
-    //   });
-    //   setToken(res.data);
-    //   return http(error.config);
-    // }
+    if (
+      error.response.status === 403 &&
+      error.response.data.error_code === "TOKEN_EXPIRED"
+    ) {
+      const token = getToken();
+      const res = await authService.refreshToken({
+        refreshToken: token.refreshToken,
+      });
+      setToken(res.data);
+      return http(error.config);
+    }
+    throw error;
   }
 );
 

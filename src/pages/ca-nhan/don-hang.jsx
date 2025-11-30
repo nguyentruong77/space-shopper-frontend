@@ -1,6 +1,6 @@
 import React from 'react'
 
-export const Order = () => {
+export const OrderPage = () => {
   return (
     <section className="pt-7 pb-12">
       <div className="container">

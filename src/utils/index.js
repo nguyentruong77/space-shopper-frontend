@@ -6,3 +6,5 @@ export * from "./token";
 export * from "./validate";
 export * from "./currency";
 export * from "./slugify";
+export * from "./copyToClipboard";
+export * from "./object";

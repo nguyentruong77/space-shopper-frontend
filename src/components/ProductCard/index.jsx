@@ -1,11 +1,55 @@
 import { useCategory } from '@/hooks/useCategories'
-import { currency } from '@/utils'
+import { productService } from '@/services/product'
+import { currency, handleError } from '@/utils'
 import { Skeleton } from '../Skeleton'
+import { message } from 'antd'
+import { useNavigate } from 'react-router-dom'
+import { PATH } from '@/config'
+import { useAuth } from '@/hooks/useAuth'
+import { PopConfirm } from '../PopConfirm'
 
-export const ProductCard = ({ images, categories, name, price, real_price, slug, discount_rate, review_count, rating_average }) => {
+export const ProductCard = ({ onRemoveWishlistSuccess, showRemove, showWishlist, id, images, categories, name, price, real_price, discount_rate, review_count, rating_average }) => {
     const img1 = images?.[0]?.thumbnail_url
     const img2 = images?.[1] ? images?.[1]?.thumbnail_url : img1
     const category = useCategory(categories)
+    const navigate = useNavigate()
+    const { user } = useAuth()
+
+    const onAddWishlist = async () => {
+        const key = `add-wishlist-${id}`
+        try {
+            message.loading({
+                key,
+                content: `Đăng thêm sản phẩm "${name}" vào yêu thích`,
+                duration: 0
+            })
+            await productService.addWishlist(id)
+            message.success({
+                key,
+                content: `Thêm sản phẩm "${name}" vào yêu thích thành công`
+            })
+        } catch (error) {
+            handleError(error, key)
+        }
+    }
+    const onRemoveWishlist = async () => {
+        const key = `remove-wishlist-${id}`
+        try {
+            message.loading({
+                key,
+                content: `Đăng xóa sản phẩm "${name}" khỏi yêu thích`,
+                duration: 0
+            })
+            await productService.removeWishlist(id)
+            message.success({
+                key,
+                content: `Xóa sản phẩm "${name}" khỏi yêu thích thành công`
+            })
+            onRemoveWishlistSuccess?.()
+        } catch (error) {
+            handleError(error, key)
+        }
+    }
     return (
         <div className="col-6 col-md-4">
             {/* Card */}
@@ -30,11 +74,30 @@ export const ProductCard = ({ images, categories, name, price, real_price, slug,
                                 <i className="fe fe-shopping-cart" />
                             </button>
                         </span>
-                        <span className="card-action">
-                            <button className="btn btn-xs btn-circle btn-white-primary" data-toggle="button">
-                                <i className="fe fe-heart" />
-                            </button>
-                        </span>
+                        {
+                            showWishlist &&
+                            <PopConfirm
+                                disabled={!!user}
+                                title="Thông báo"
+                                description="Vui lòng đăng nhặp trước khi đưa sản phẩm vào yêu thích"
+                                onConfirm={() => navigate(PATH.Account)}
+                                okText="Đăng nhập"
+                                showCancel={false}>
+                                <span className="card-action">
+                                    <button onClick={() => user ? onAddWishlist : undefined} className="btn btn-xs btn-circle btn-white-primary" data-toggle="button">
+                                        <i className="fe fe-heart" />
+                                    </button>
+                                </span>
+                            </PopConfirm>
+                        }
+                        {
+                            showRemove &&
+                            <span className="card-action">
+                                <button onClick={onRemoveWishlist} className="btn btn-xs btn-circle btn-white-primary" data-toggle="button">
+                                    <i className="fe fe-x" />
+                                </button>
+                            </span>
+                        }
                     </div>
                 </div>
                 {/* Body */}
@@ -91,21 +154,6 @@ export const ProductCardLoading = () => {
                     <a className="card-img-hover" href="product.html">
                         <Skeleton height={300} />
                     </a>
-                    {/* Actions */}
-                    <div className="card-actions">
-                        <span className="card-action">
-                        </span>
-                        <span className="card-action">
-                            <button className="btn btn-xs btn-circle btn-white-primary" data-toggle="button">
-                                <i className="fe fe-shopping-cart" />
-                            </button>
-                        </span>
-                        <span className="card-action">
-                            <button className="btn btn-xs btn-circle btn-white-primary" data-toggle="button">
-                                <i className="fe fe-heart" />
-                            </button>
-                        </span>
-                    </div>
                 </div>
                 {/* Body */}
                 <div className="card-body px-0">

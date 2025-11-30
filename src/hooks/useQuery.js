@@ -1,6 +1,6 @@
 import { localStorageCache, sessionStorageCache } from "@/utils/cache";
-import { handleError } from "@/utils/handleError";
-import { useRef, useEffect, useState } from "react";
+import { delay } from "@/utils/delay";
+import { useEffect, useRef, useState } from "react";
 
 const _cache = {
   localStorage: localStorageCache,
@@ -15,6 +15,7 @@ export const useQuery = ({
   cacheTime,
   storeDriver = "localStorage",
   keepPreviousData = false,
+  limitDuration,
 }) => {
   const dataRef = useRef({});
   const cacheName = Array.isArray(queryKey) ? queryKey[0] : queryKey;
@@ -42,8 +43,8 @@ export const useQuery = ({
 
   const getCacheDataOrPreviousData = () => {
     if (cacheName) {
-      if (keepPreviousData && dataRef[cacheName]) {
-        return dataRef[cacheName];
+      if (keepPreviousData && dataRef.current[cacheName]) {
+        return dataRef.current[cacheName];
       }
 
       if (_asyncFunction[cacheName]) {
@@ -55,7 +56,7 @@ export const useQuery = ({
 
   const setCacheDataOrPreviousData = async (data) => {
     if (keepPreviousData) {
-      dataRef[cacheName] = data;
+      dataRef.current[cacheName] = data;
     }
     if (cacheName && cacheTime) {
       let expired = cacheTime;
@@ -67,15 +68,18 @@ export const useQuery = ({
     }
   };
 
-  const fetchData = async () => {
+  const fetchData = async (...args) => {
     controllerRef.current.abort();
     controllerRef.current = new AbortController();
+    const startTime = Date.now();
+    let res;
+    let error;
     try {
       setLoading(true);
       setStatus("pending");
-      let res = getCacheDataOrPreviousData();
+      res = getCacheDataOrPreviousData();
       if (!res) {
-        res = queryFn({ signal: controllerRef.current.signal });
+        res = queryFn({ signal: controllerRef.current.signal, params: args });
         if (cacheName) {
           _asyncFunction[cacheName] = res;
         }
@@ -85,20 +89,37 @@ export const useQuery = ({
         res = await res;
         if (!res) return;
       }
+    } catch (err) {
+      console.log(err);
+      error = err;
+    }
+    const endTime = Date.now();
+    if (limitDuration) {
+      let timeout = endTime - startTime;
+      if (timeout < limitDuration) {
+        await delay(limitDuration - timeout);
+      }
+    }
 
+    if (cacheName) delete _asyncFunction[cacheName];
+
+    if (res) {
       setStatus("success");
       setData(res);
-
       setCacheDataOrPreviousData(res);
       reFetchRef.current = false;
       setLoading(false);
-    } catch (error) {
-      console.log("error", error);
+      return res;
+    }
+    if (error) {
       setError(error);
       setStatus("error");
-      handleError(error);
       setLoading(false);
+      throw error;
     }
+  };
+  const clearPreviousData = () => {
+    dataRef.current = {};
   };
   return {
     data,
@@ -106,5 +127,6 @@ export const useQuery = ({
     status,
     loading,
     refetch: fetchData,
+    clearPreviousData,
   };
 };

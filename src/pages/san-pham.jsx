@@ -10,7 +10,7 @@ import { useSearch } from '@/hooks/useSearch'
 import { productService } from '@/services/product'
 import { cn, slugify } from '@/utils'
 import queryString from 'query-string'
-import { useEffect, useRef, useState } from 'react'
+import { useState } from 'react'
 import { generatePath, Link, useParams } from 'react-router-dom'
 
 export const ProductPage = () => {
@@ -260,7 +260,7 @@ export const ProductPage = () => {
                         <div className="row">
                             {
                                 loading ? Array.from(Array(15)).map((_, i) => <ProductCardLoading key={i} />) :
-                                    data.data.map((item) => <ProductCard key={item.id} {...item} />)
+                                    data.data.map((item) => <ProductCard key={item.id} showWishlist {...item} />)
                             }
                         </div>
                         {/* Pagination */}

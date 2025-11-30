@@ -32,7 +32,7 @@ export const routes = [
             {
                 element: <PrivateRoute redirect={PATH.Account} />,
                 children: profile,
-                path: PATH.Profile.index,
+                //path: PATH.Profile.index,
             },
             {
                 element: <GuestRoute redirect={PATH.Profile.index} />,
@@ -40,9 +40,9 @@ export const routes = [
                     {
                         index: true,
                         element: <AccountPage />,
+                        path: PATH.Account,
                     }
                 ],
-                path: PATH.Account,
             },
             {
                 element: <Page404 />,
