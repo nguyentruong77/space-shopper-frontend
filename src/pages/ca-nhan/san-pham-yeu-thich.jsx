@@ -7,15 +7,16 @@ import queryString from 'query-string'
 import React from 'react'
 
 export const WishlistPage = () => {
-    const { search } = useSearch({
+    const [search] = useSearch({
         page: 1
     })
     const qs = queryString.stringify({
-        page: search.page
+        page: search?.page
     })
     const { loading, data, refetch: fetchWishlist, clearPreviousData } = useQuery({
         queryKey: [qs],
-        queryFn: () => productService.getWishlist(`?${qs}`)
+        queryFn: () => productService.getWishlist(`?${qs}`),
+        keepPreviousData: true,
     })
     return (
         <>

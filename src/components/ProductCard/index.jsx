@@ -75,7 +75,6 @@ export const ProductCard = ({ onRemoveWishlistSuccess, showRemove, showWishlist,
                             </button>
                         </span>
                         {
-                            showWishlist &&
                             <PopConfirm
                                 disabled={!!user}
                                 title="Thông báo"
@@ -83,12 +82,15 @@ export const ProductCard = ({ onRemoveWishlistSuccess, showRemove, showWishlist,
                                 onConfirm={() => navigate(PATH.Account)}
                                 okText="Đăng nhập"
                                 showCancel={false}>
-                                <span className="card-action">
-                                    <button onClick={() => user ? onAddWishlist : undefined} className="btn btn-xs btn-circle btn-white-primary" data-toggle="button">
-                                        <i className="fe fe-heart" />
-                                    </button>
-                                </span>
                             </PopConfirm>
+                        }
+                        {
+                            showWishlist &&
+                            <span className="card-action">
+                                <button onClick={() => user ? onAddWishlist() : undefined} className="btn btn-xs btn-circle btn-white-primary" data-toggle="button">
+                                    <i className="fe fe-heart" />
+                                </button>
+                            </span>
                         }
                         {
                             showRemove &&

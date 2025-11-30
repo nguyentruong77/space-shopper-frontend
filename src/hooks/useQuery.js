@@ -16,6 +16,8 @@ export const useQuery = ({
   storeDriver = "localStorage",
   keepPreviousData = false,
   limitDuration,
+  onSuccess,
+  onError,
 }) => {
   const dataRef = useRef({});
   const cacheName = Array.isArray(queryKey) ? queryKey[0] : queryKey;
@@ -103,15 +105,17 @@ export const useQuery = ({
 
     if (cacheName) delete _asyncFunction[cacheName];
 
-    if (res) {
-      setStatus("success");
-      setData(res);
+    if (res && !(res instanceof Promise)) {
       setCacheDataOrPreviousData(res);
       reFetchRef.current = false;
+      onSuccess?.(res);
+      setData(res);
       setLoading(false);
+      setStatus("success");
       return res;
     }
     if (error) {
+      onError?.(error);
       setError(error);
       setStatus("error");
       setLoading(false);

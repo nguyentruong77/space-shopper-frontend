@@ -65,7 +65,7 @@ export const ProfilePage = () => {
 
         let avatar
         if (fileRef.current) {
-            const res = fileService.uploadFile(fileRef.current)
+            const res = await fileService.uploadFile(fileRef.current)
             if (res.link) {
                 avatar = res.link
             }
@@ -111,8 +111,8 @@ export const ProfilePage = () => {
                             (PreviewSrc, trigger) => (
                                 <div className="profile-avatar">
                                     <div className="wrap" onClick={trigger}>
-                                        <img src="avatarDefault" />
-                                        <i className={PreviewSrc || user.avatar || avatarDefault}>
+                                        <img src={PreviewSrc || user.avatar || avatarDefault} />
+                                        <i className="icon">
                                             <img src="./img/icons/icon-camera.svg" />
                                         </i>
                                     </div>
@@ -186,12 +186,13 @@ export const ProfilePage = () => {
                     <Field
                         label="Gender"
                         {...userForm.register('gender')}
-                        renderField={props => <div className='btn-group-toggle'>
-                            <Radio.group defaultValue={props.value} onChange={value => props?.onChange?.(value)}>
-                                <Radio.toggle value="male">Male</Radio.toggle>
-                                <Radio.toggle value="female">Female</Radio.toggle>
-                            </Radio.group>
-                        </div>}
+                        renderField={props =>
+                            <div className='btn-group-toggle'>
+                                <Radio.Group defaultValue={props.value} onChange={value => props?.onChange?.(value)}>
+                                    <Radio.Toggle value="male">Male</Radio.Toggle>
+                                    <Radio.Toggle value="female">Female</Radio.Toggle>
+                                </Radio.Group>
+                            </div>}
                     />
                 </div>
                 <div className="col-12">

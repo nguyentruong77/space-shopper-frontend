@@ -9,7 +9,7 @@ export const UploadFile = ({ children, onChange }) => {
             const reader = new FileReader()
             onChange?.(fileRef.current.files[0])
             reader.addEventListener('load', () => {
-                setImagePreview(fileRef.current.files[0])
+                setImagePreview(reader.result)
             })
             reader.readAsDataURL(fileRef.current.files[0])
         }

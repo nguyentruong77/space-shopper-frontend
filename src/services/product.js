@@ -12,9 +12,9 @@ export const productService = {
     return http.get(`${PRODUCT_API}/wishlist${query}`);
   },
   addWishlist(productId) {
-    return http.post(`${PRODUCT_API}/wishlist${productId}`);
+    return http.post(`${PRODUCT_API}/wishlist/${productId}`);
   },
   removeWishlist(productId) {
-    return http.delete(`${PRODUCT_API}/wishlist${productId}`);
+    return http.delete(`${PRODUCT_API}/wishlist/${productId}`);
   },
 };

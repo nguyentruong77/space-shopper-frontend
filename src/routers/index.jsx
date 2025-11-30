@@ -8,8 +8,9 @@ import { ProductPage } from "@/pages/san-pham";
 import { profile } from "./ca-nhan";
 import GuestRoute from "@/components/GuestRoute";
 import { AccountPage } from "@/pages/tai-khoan";
+import { createBrowserRouter } from "react-router-dom";
 
-export const routes = [
+const routes = [
     {
         element: <MainLayout />,
         children: [
@@ -51,3 +52,5 @@ export const routes = [
         ]
     }
 ]
+
+export const router = createBrowserRouter(routes)

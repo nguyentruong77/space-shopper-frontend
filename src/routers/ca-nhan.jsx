@@ -3,6 +3,8 @@ import { ProfileLayout } from "@/layouts/ProfileLayout";
 import { ProfilePage } from "@/pages/ca-nhan";
 import { OrderPage } from "@/pages/ca-nhan/don-hang";
 import { WishlistPage } from "@/pages/ca-nhan/san-pham-yeu-thich";
+import { AddressPage } from "@/pages/ca-nhan/so-dia-chi";
+import { ActionAddressPage } from "@/pages/ca-nhan/so-dia-chi/action";
 
 export const profile = [
     {
@@ -21,9 +23,24 @@ export const profile = [
             },
             {
                 element: <OrderPage />,
-                PATH: PATH.Profile.Order,
+                path: PATH.Profile.Order,
                 handle: { title: "Theo dõi đơn hàng" },
-            }
+            },
+            {
+                element: <AddressPage />,
+                path: PATH.Profile.Address,
+                handle: { title: "Sổ địa chỉ" },
+            },
+            {
+                element: <ActionAddressPage />,
+                path: PATH.Profile.NewAddress,
+                handle: { title: "Thêm địa chỉ" },
+            },
+            {
+                element: <ActionAddressPage />,
+                path: PATH.Profile.EditAddress,
+                handle: { title: "Cập nhật địa chỉ" },
+            },
         ]
     }
 ]

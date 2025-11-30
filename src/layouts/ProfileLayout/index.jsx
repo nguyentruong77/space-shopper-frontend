@@ -6,7 +6,7 @@ import { NavLink, Outlet, useMatches } from 'react-router-dom'
 
 export const ProfileLayout = () => {
     const matches = useMatches()
-    const title = matches(e => e?.handle?.title) || ""
+    const title = matches?.find(e => e?.handle?.title)?.handle?.title || ""
     const dispatch = useDispatch()
     return (
         <section className="pt-7 pb-12">
