@@ -1,8 +1,7 @@
-import { AddressCard, ListAddressCard } from '@/components/AddressCard'
+import { ListAddressCard } from '@/components/AddressCard'
 import { PATH } from '@/config'
 import { useQuery } from '@/hooks/useQuery'
 import { userService } from '@/services/user'
-import React from 'react'
 import { Link } from 'react-router-dom'
 
 export const AddressPage = () => {

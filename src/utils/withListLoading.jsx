@@ -1,3 +1,5 @@
+import React from "react"
+
 export const withListLoading = (Component, LoadingComponent = Comment) => {
     return ({ loadingCount = 3, data, loading, empty, ...props }) => {
         return loading ? Array.from(Array(loadingCount)).map((_, i) => <LoadingComponent key={i} loading />)

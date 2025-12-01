@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useRef } from 'react'
 import { Skeleton } from '../Skeleton'
 import { withLoading } from '@/utils/withLoading'
 import { withListLoading } from '@/utils/withListLoading'
@@ -9,6 +9,7 @@ import { userService } from '@/services/user'
 import { message } from 'antd'
 import { generatePath, Link } from 'react-router-dom'
 import { PATH } from '@/config'
+import { useAction } from '@/hooks/useAction'
 
 const AddressCardLoading = () => {
     return (
@@ -32,45 +33,23 @@ const AddressCardLoading = () => {
 }
 
 const AddressCard = withLoading(({ onChangeAddressDefault, onDeleteAddress, _id, phone, email, address, province, district, fullName, default: addressDefault }) => {
-    const _onChangeAddressDefault = async () => {
-        const key = `change-address-default-{_id}`
-        try {
-            message.loading({
-                key,
-                content: "Thao tác đang được thực hiện"
-            })
-            await userService.editAddress(_id, { default: true })
-            message.success({
-                key,
-                content: "Thay đổi địa chỉ mặc định thành công"
-            })
-            onChangeAddressDefault?.()
-        } catch (error) {
-            handleError(error, key)
-        }
-    }
-    const _onDeleteAddress = async () => {
-        const key = `delete-address-{_id}`
-        try {
-            message.loading({
-                key,
-                content: "Đang xóa địa chỉ"
-            })
-            await userService.removeAddress(_id)
-            message.success({
-                key,
-                content: "Xóa địa chỉ thành công"
-            })
-            onDeleteAddress?.()
-        } catch (error) {
-            handleError(error, key)
-        }
-    }
+    const _onChangeAddressDefault = useAction({
+        service: () => userService.editAddress(_id, { default: true }),
+        loadingMessage: "Thao tác đang được thực hiện",
+        successMessage: "Thay đổi địa chỉ mặc định thành công",
+        onSuccess: onChangeAddressDefault?.()
+    })
+    const _onDeleteAddress = useAction({
+        service: () => userService.removeAddress(_id),
+        loadingMessage: "Đang xóa địa chỉ",
+        successMessage: "Xóa địa chỉ thành công",
+        onSuccess: onDeleteAddress?.()
+    })
 
     return (
-        <AddressCardStyle className="col-12">
+        <AddressCardStyle className="col-12" >
             {/* Card */}
-            <div className="card card-lg bg-light mb-8">
+            < div className="card card-lg bg-light mb-8" >
                 <div className="card-body">
                     {/* Text */}
                     <p className="font-size-sm mb-0 leading-[35px]">
@@ -105,8 +84,8 @@ const AddressCard = withLoading(({ onChangeAddressDefault, onDeleteAddress, _id,
                         }
                     </div>
                 </div>
-            </div>
-        </AddressCardStyle>
+            </ div>
+        </AddressCardStyle >
     )
 }, AddressCardLoading)
 

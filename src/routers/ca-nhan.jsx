@@ -5,6 +5,8 @@ import { OrderPage } from "@/pages/ca-nhan/don-hang";
 import { WishlistPage } from "@/pages/ca-nhan/san-pham-yeu-thich";
 import { AddressPage } from "@/pages/ca-nhan/so-dia-chi";
 import { ActionAddressPage } from "@/pages/ca-nhan/so-dia-chi/action";
+import { PaymentPage } from "@/pages/ca-nhan/so-thanh-toan";
+import { ActionPaymentPage } from "@/pages/ca-nhan/so-thanh-toan/action";
 
 export const profile = [
     {
@@ -40,6 +42,21 @@ export const profile = [
                 element: <ActionAddressPage />,
                 path: PATH.Profile.EditAddress,
                 handle: { title: "Cập nhật địa chỉ" },
+            },
+            {
+                element: <PaymentPage />,
+                path: PATH.Profile.Payment,
+                handle: { title: "Sổ thanh toán" },
+            },
+            {
+                element: <ActionPaymentPage />,
+                path: PATH.Profile.NewPayment,
+                handle: { title: "Thêm thẻ thanh toán" },
+            },
+            {
+                element: <ActionPaymentPage />,
+                path: PATH.Profile.EditPayment,
+                handle: { title: "Cập thẻ thanh toán" },
             },
         ]
     }

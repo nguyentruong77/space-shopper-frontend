@@ -1,10 +1,9 @@
 import { Paginate } from '@/components/Paginate'
-import { ProductCard, ProductCardLoading } from '@/components/ProductCard'
+import { ListProductCard } from '@/components/ProductCard'
 import { useQuery } from '@/hooks/useQuery'
 import { useSearch } from '@/hooks/useSearch'
 import { productService } from '@/services/product'
 import queryString from 'query-string'
-import React from 'react'
 
 export const WishlistPage = () => {
     const [search] = useSearch({
@@ -23,13 +22,16 @@ export const WishlistPage = () => {
             <div>
                 {/* Products */}
                 <div className="row">
-                    {
-                        loading ? Array.from(Array(15)).map((_, i) => <ProductCardLoading key={i} />) :
-                            data.data.map((item) => <ProductCard onRemoveWishlistSuccess={() => {
-                                clearPreviousData()
-                                fetchWishlist()
-                            }} showRemove key={item.id} {...item} />)
-                    }
+                    <ListProductCard
+                        data={data?.data}
+                        loading={loading}
+                        loadingCount={15}
+                        onRemoveWishlistSuccess={() => {
+                            clearPreviousData()
+                            fetchWishlist()
+                        }}
+                        showRemove
+                    />
                 </div>
                 {/* Pagination */}
                 <Paginate totalPage={data?.paginate.totalPage} />

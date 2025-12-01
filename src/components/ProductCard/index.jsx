@@ -7,49 +7,30 @@ import { useNavigate } from 'react-router-dom'
 import { PATH } from '@/config'
 import { useAuth } from '@/hooks/useAuth'
 import { PopConfirm } from '../PopConfirm'
+import { withListLoading } from '@/utils/withListLoading'
+import { useRef } from 'react'
+import { useAction } from '@/hooks/useAction'
+import { Rating } from '../Rating'
 
-export const ProductCard = ({ onRemoveWishlistSuccess, showRemove, showWishlist, id, images, categories, name, price, real_price, discount_rate, review_count, rating_average }) => {
+const ProductCard = ({ onRemoveWishlistSuccess, showRemove, showWishlist, id, images, categories, name, price, real_price, discount_rate, review_count, rating_average }) => {
     const img1 = images?.[0]?.thumbnail_url
     const img2 = images?.[1] ? images?.[1]?.thumbnail_url : img1
     const category = useCategory(categories)
     const navigate = useNavigate()
     const { user } = useAuth()
 
-    const onAddWishlist = async () => {
-        const key = `add-wishlist-${id}`
-        try {
-            message.loading({
-                key,
-                content: `Đăng thêm sản phẩm "${name}" vào yêu thích`,
-                duration: 0
-            })
-            await productService.addWishlist(id)
-            message.success({
-                key,
-                content: `Thêm sản phẩm "${name}" vào yêu thích thành công`
-            })
-        } catch (error) {
-            handleError(error, key)
-        }
-    }
-    const onRemoveWishlist = async () => {
-        const key = `remove-wishlist-${id}`
-        try {
-            message.loading({
-                key,
-                content: `Đăng xóa sản phẩm "${name}" khỏi yêu thích`,
-                duration: 0
-            })
-            await productService.removeWishlist(id)
-            message.success({
-                key,
-                content: `Xóa sản phẩm "${name}" khỏi yêu thích thành công`
-            })
-            onRemoveWishlistSuccess?.()
-        } catch (error) {
-            handleError(error, key)
-        }
-    }
+    const onAddWishlist = useAction({
+        service: () => productService.addWishlist(id),
+        loadingMessage: `Đăng thêm sản phẩm "${name}" vào yêu thích`,
+        successMessage: `Thêm sản phẩm "${name}" vào yêu thích thành công`,
+    })
+
+    const onRemoveWishlist = useAction({
+        service: () => productService.removeWishlist(id),
+        loadingMessage: `Đăng xóa sản phẩm "${name}" khỏi yêu thích`,
+        successMessage: `Xóa sản phẩm "${name}" khỏi yêu thích thành công`,
+        onSuccess: onRemoveWishlistSuccess?.()
+    })
     return (
         <div className="col-6 col-md-4">
             {/* Card */}
@@ -118,11 +99,7 @@ export const ProductCard = ({ onRemoveWishlistSuccess, showRemove, showWishlist,
                         {
                             review_count > 0 && <>
                                 {rating_average}
-                                <svg stroke="currentColor" fill="currentColor" strokeWidth={0} viewBox="0 0 24 24" size={14} color="#fdd836" height={14} width={14} xmlns="http://www.w3.org/2000/svg" style={{ color: 'rgb(253, 216, 54)' }}><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" /></svg>
-                                <svg stroke="currentColor" fill="currentColor" strokeWidth={0} viewBox="0 0 24 24" size={14} color="#fdd836" height={14} width={14} xmlns="http://www.w3.org/2000/svg" style={{ color: 'rgb(253, 216, 54)' }}><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" /></svg>
-                                <svg stroke="currentColor" fill="currentColor" strokeWidth={0} viewBox="0 0 24 24" size={14} color="#fdd836" height={14} width={14} xmlns="http://www.w3.org/2000/svg" style={{ color: 'rgb(253, 216, 54)' }}><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" /></svg>
-                                <svg stroke="currentColor" fill="currentColor" strokeWidth={0} viewBox="0 0 24 24" size={14} color="#fdd836" height={14} width={14} xmlns="http://www.w3.org/2000/svg" style={{ color: 'rgb(253, 216, 54)' }}><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" /></svg>
-                                <svg stroke="currentColor" fill="currentColor" strokeWidth={0} viewBox="0 0 24 24" size={14} color="#fdd836" height={14} width={14} xmlns="http://www.w3.org/2000/svg" style={{ color: 'rgb(253, 216, 54)' }}><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" /></svg>
+                                <Rating value={rating_average} />
                                 ({review_count} review)
                             </>
                         }
@@ -145,7 +122,7 @@ export const ProductCard = ({ onRemoveWishlistSuccess, showRemove, showWishlist,
     )
 }
 
-export const ProductCardLoading = () => {
+const ProductCardLoading = () => {
     return (
         <div className="col-6 col-md-4">
             {/* Card */}
@@ -181,3 +158,5 @@ export const ProductCardLoading = () => {
 
     )
 }
+
+export const ListProductCard = withListLoading(ProductCard, ProductCardLoading)

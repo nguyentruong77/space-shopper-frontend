@@ -4,7 +4,7 @@ import { PATH } from '@/config'
 import { useForm } from '@/hooks/useForm'
 import { useQuery } from '@/hooks/useQuery'
 import { userService } from '@/services/user'
-import { handleError, regexp, required } from '@/utils'
+import { handleError, object, regexp, required } from '@/utils'
 import { message, Spin } from 'antd'
 import React from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
@@ -61,6 +61,10 @@ export const ActionAddressPage = () => {
   const onSubmit = async () => {
     try {
       if (form.validate()) {
+        if (id && object.isEqual(form.values, addressDetail.data)) {
+          message.warning('Vui lòng thay đổi dữ liệu trước khi cập nhật')
+          return
+        }
         await actionService(form.values)
         message.success(id ? 'Cập nhật địa chỉ thành công' : 'Thêm địa chỉ thành công')
         navigate(PATH.Profile.Address)
