@@ -1,16 +1,17 @@
+import { PATH } from '@/config'
+import { useAction } from '@/hooks/useAction'
+import { useAuth } from '@/hooks/useAuth'
 import { useCategory } from '@/hooks/useCategories'
 import { productService } from '@/services/product'
-import { currency, handleError } from '@/utils'
-import { Skeleton } from '../Skeleton'
-import { message } from 'antd'
-import { useNavigate } from 'react-router-dom'
-import { PATH } from '@/config'
-import { useAuth } from '@/hooks/useAuth'
-import { PopConfirm } from '../PopConfirm'
+import { updateCardItemAction } from '@/stores/cart'
+import { currency } from '@/utils'
 import { withListLoading } from '@/utils/withListLoading'
-import { useRef } from 'react'
-import { useAction } from '@/hooks/useAction'
+import { useDispatch } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
+import { PopConfirm } from '../PopConfirm'
 import { Rating } from '../Rating'
+import { Skeleton } from '../Skeleton'
+import { useCart } from '@/hooks/useCart'
 
 const ProductCard = ({ onRemoveWishlistSuccess, showRemove, showWishlist, id, images, categories, name, price, real_price, discount_rate, review_count, rating_average }) => {
     const img1 = images?.[0]?.thumbnail_url
@@ -18,19 +19,36 @@ const ProductCard = ({ onRemoveWishlistSuccess, showRemove, showWishlist, id, im
     const category = useCategory(categories)
     const navigate = useNavigate()
     const { user } = useAuth()
+    const { cart } = useCart()
+    const dispatch = useDispatch();
 
     const onAddWishlist = useAction({
         service: () => productService.addWishlist(id),
-        loadingMessage: `Đăng thêm sản phẩm "${name}" vào yêu thích`,
+        loadingMessage: `Đang thêm sản phẩm "${name}" vào yêu thích`,
         successMessage: `Thêm sản phẩm "${name}" vào yêu thích thành công`,
     })
 
     const onRemoveWishlist = useAction({
         service: () => productService.removeWishlist(id),
-        loadingMessage: `Đăng xóa sản phẩm "${name}" khỏi yêu thích`,
+        loadingMessage: `Đang xóa sản phẩm "${name}" khỏi yêu thích`,
         successMessage: `Xóa sản phẩm "${name}" khỏi yêu thích thành công`,
         onSuccess: onRemoveWishlistSuccess?.()
     })
+
+    const onAddCardItem = () => {
+        if (user) {
+            const { listItems } = cart
+            const product = listItems.find(e => e.productId === id)
+
+            dispatch(updateCardItemAction({
+                productId: id,
+                quantity: product?.quantity ? product?.quantity + 1 : 1,
+                showPopOver: true,
+            }))
+        } else {
+            navigate(PATH.Account)
+        }
+    }
     return (
         <div className="col-6 col-md-4">
             {/* Card */}
@@ -51,7 +69,7 @@ const ProductCard = ({ onRemoveWishlistSuccess, showRemove, showWishlist, id, im
                         <span className="card-action">
                         </span>
                         <span className="card-action">
-                            <button className="btn btn-xs btn-circle btn-white-primary" data-toggle="button">
+                            <button onClick={onAddCardItem} className="btn btn-xs btn-circle btn-white-primary" data-toggle="button">
                                 <i className="fe fe-shopping-cart" />
                             </button>
                         </span>

@@ -6,7 +6,7 @@ import { useForm } from '@/hooks/useForm'
 import { useQuery } from '@/hooks/useQuery'
 import { useSearch } from '@/hooks/useSearch'
 import { userService } from '@/services/user'
-import { loginAction, loginByCodeAction } from '@/stories/auth'
+import { loginAction, loginByCodeAction } from '@/stores/auth'
 import { confirm, copyToClipboard, handleError, regexp, required } from '@/utils'
 import { message } from 'antd'
 import { useEffect } from 'react'
@@ -76,7 +76,7 @@ export const AccountPage = () => {
     const onLogin = async () => {
         if (formLogin.validate()) {
             try {
-                await dispatch(loginAction(formLogin.values)).unwrap()
+                await dispatch(loginAction(formLogin.values))
                 message.success("Đăng nhập thành công")
             } catch (error) {
                 handleError(error)

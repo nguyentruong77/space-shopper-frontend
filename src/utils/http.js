@@ -10,6 +10,8 @@ export const AUTHENTICATION_API = import.meta.env.VITE_AUTHENTICATION_API;
 
 export const http = axios.create();
 
+let refreshTokenPromise = null;
+
 http.interceptors.response.use(
   (res) => {
     return res.data ?? res;
@@ -19,11 +21,17 @@ http.interceptors.response.use(
       error.response.status === 403 &&
       error.response.data.error_code === "TOKEN_EXPIRED"
     ) {
-      const token = getToken();
-      const res = await authService.refreshToken({
-        refreshToken: token.refreshToken,
-      });
-      setToken(res.data);
+      if (refreshTokenPromise) {
+        await refreshTokenPromise;
+      } else {
+        const token = getToken();
+        refreshTokenPromise = authService.refreshToken({
+          refreshToken: token.refreshToken,
+        });
+        const res = await refreshTokenPromise;
+        setToken(res.data);
+        refreshTokenPromise = null;
+      }
       return http(error.config);
     }
     throw error;

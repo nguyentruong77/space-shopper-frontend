@@ -4,7 +4,7 @@ import { Provider } from 'react-redux'
 import { RouterProvider } from 'react-router-dom'
 import App from './App.jsx'
 import { router } from './routers/index.jsx'
-import { store } from './stories/index.js'
+import { store } from './stores/index.js'
 
 createRoot(document.getElementById('root')).render(
   <Provider store={store}>
