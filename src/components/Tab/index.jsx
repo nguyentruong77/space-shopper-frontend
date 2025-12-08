@@ -1,0 +1,49 @@
+import { cn } from '@/utils'
+import React, { createContext, useContext, useEffect, useRef, useState } from 'react'
+import { useLocation, useSearchParams } from 'react-router-dom'
+
+const Context = createContext({})
+
+export const Tab = ({ name = 'Tab', removeOnDeActive, children, defaultActive, onChange }) => {
+    const [search] = useSearchParams()
+    const [active, _setActive] = useState(search.get(name) || defaultActive)
+    const setActive = (value) => {
+        _setActive(value)
+        onChange?.(value)
+    }
+    return (
+        <Context.Provider value={{ removeOnDeActive, active, setActive, name }}>{children}</Context.Provider>
+    )
+}
+
+Tab.Title = ({ children, value }) => {
+    const { pathname } = useLocation()
+    const [search, setSearch] = useSearchParams()
+    const { active, setActive, name } = useContext(Context)
+    const onClick = (ev) => {
+        ev.preventDefault();
+        setActive(value);
+        setSearch((search) => {
+            const _search = new URLSearchParams(search)
+            _search.set(name, value)
+            return _search
+        })
+    }
+    return <a onClick={onClick} className={cn("nav-link", { active: value === active })} href='#'>{children}</a>
+}
+
+Tab.Content = ({ children, value }) => {
+    const firstRender = useRef(false)
+    const { active, removeOnDeActive } = useContext(Context)
+    useEffect(() => {
+        if (active === value) {
+            firstRender.current = true
+        }
+    }, [active])
+    if (removeOnDeActive && active !== value) {
+        if (!firstRender.current) {
+            return null
+        }
+    }
+    return <div className={cn("tab-pane fade", { 'show active': value === active })}>{children}</div>
+} 

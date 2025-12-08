@@ -169,7 +169,7 @@ export const Header = () => {
                                         }
                                     }} open={openCartOver} placement='bottomRight' content={<>
                                         <p className='mb-0 flex gap-2 items-center'><span className='text-green-500'><CheckCircleFilled /></span>Thêm sản phẩm vào giỏ hàng thành công</p>
-                                        <Button className="w-full btn-size-xs mt-2">Xem giỏ hàng và thanh toán</Button>
+                                        <Link onClick={() => dispatch(cartActions.togglePopOver({ showPopOver: false }))} to={PATH.ViewCart} className="btn btn-xs btn-dark flex items-center justify-center gap-2 w-full btn-size-xs mt-2">Xem giỏ hàng và thanh toán</Link>
                                     </>}>
                                         <a onClick={(ev) => {
                                             ev.preventDefault()

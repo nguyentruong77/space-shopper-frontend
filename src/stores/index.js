@@ -16,7 +16,9 @@ export const store = configureStore({
     cart: cartReducer,
   },
   devTools: ENV === "development",
-  middleware: (getMiddleware) => getMiddleware().concat(sagaMiddleware),
+  // Check function chua trong action
+  middleware: (getMiddleware) =>
+    getMiddleware({ serializableCheck: false }).concat(sagaMiddleware),
 });
 
 sagaMiddleware.run(rootSaga);

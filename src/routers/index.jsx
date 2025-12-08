@@ -9,6 +9,9 @@ import { profile } from "./ca-nhan";
 import GuestRoute from "@/components/GuestRoute";
 import { AccountPage } from "@/pages/tai-khoan";
 import { createBrowserRouter } from "react-router-dom";
+import { ViewCart } from "@/pages/gio-hang";
+import { Checkout } from "@/pages/checkout";
+import { OrderComplete } from "@/pages/dat-hang-thanh-cong";
 
 const routes = [
     {
@@ -31,9 +34,20 @@ const routes = [
                 path: PATH.ProductDetail,
             },
             {
+                element: <ViewCart />,
+                path: PATH.ViewCart,
+            },
+            {
+                element: <Checkout />,
+                path: PATH.Checkout,
+            },
+            {
+                element: <OrderComplete />,
+                path: PATH.OrderComplete,
+            },
+            {
                 element: <PrivateRoute redirect={PATH.Account} />,
                 children: profile,
-                //path: PATH.Profile.index,
             },
             {
                 element: <GuestRoute redirect={PATH.Profile.index} />,

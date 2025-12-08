@@ -2,6 +2,7 @@ import { PATH } from "@/config";
 import { ProfileLayout } from "@/layouts/ProfileLayout";
 import { ProfilePage } from "@/pages/ca-nhan";
 import { OrderPage } from "@/pages/ca-nhan/don-hang";
+import { OrderDetailPage } from "@/pages/ca-nhan/don-hang/[id]";
 import { WishlistPage } from "@/pages/ca-nhan/san-pham-yeu-thich";
 import { AddressPage } from "@/pages/ca-nhan/so-dia-chi";
 import { ActionAddressPage } from "@/pages/ca-nhan/so-dia-chi/action";
@@ -26,6 +27,11 @@ export const profile = [
             {
                 element: <OrderPage />,
                 path: PATH.Profile.Order,
+                handle: { title: "Theo dõi đơn hàng" },
+            },
+            {
+                element: <OrderDetailPage />,
+                path: PATH.Profile.OrderDetail,
                 handle: { title: "Theo dõi đơn hàng" },
             },
             {

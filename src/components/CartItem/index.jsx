@@ -1,55 +1,54 @@
 import { useCart } from '@/hooks/useCart'
-import { removeCartItemAction, updateCardItemAction } from '@/stores/cart'
-import { currency } from '@/utils'
+import { removeCartItemAction, toggleItemCheckoutAction, updateCardItemAction } from '@/stores/cart'
+import { cn, currency } from '@/utils'
 import { Spin } from 'antd'
 import { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { PopConfirm } from '../PopConfirm'
+import { Checkbox } from '../checkout'
 
-export const CartItem = ({ productId, product, quantity }) => {
+export const CartItem = ({ footer, hideAction, allowSelect, productId, product, quantity, ...props }) => {
     const dispatch = useDispatch()
     const [_quantity, setQuantity] = useState(quantity)
-    const { loading } = useCart()
+    const { loading, preCheckoutData: { listItems } } = useCart()
     const _loading = loading[productId] || false
     const [openPopConfirm, setOpenPopConfirm] = useState(false)
     const [openPopConfirmQuantity, setOpenPopConfirmQuantity] = useState(false)
+
+    const selected = !!listItems.find(e => e === productId)
 
     useEffect(() => {
         if (_quantity !== quantity) {
             setQuantity(quantity)
         }
     }, [quantity])
-    const onDecrement = () => {
-        setQuantity(_quantity - 1)
-        dispatch(updateCardItemAction({
-            productId,
-            quantity: _quantity - 1,
-        }))
+    const onChangeQuantity = (val) => () => {
+        if (val === 0) {
+            dispatch(removeCartItemAction(productId))
+        } else {
+            setQuantity(val)
+            dispatch(updateCardItemAction({
+                productId,
+                quantity: val,
+            }))
+        }
     }
-    const onIncrement = () => {
-        //inputRef.current.value++;
-        setQuantity(_quantity + 1)
-        dispatch(updateCardItemAction({
+    const onSelectCartItem = (checked) => {
+        dispatch(toggleItemCheckoutAction({
             productId,
-            quantity: _quantity + 1,
+            checked,
         }))
-    }
-    const onUpdateQuantity = (val) => {
-        dispatch(updateCardItemAction({
-            productId,
-            quantity: val,
-        }))
-    }
-    const onRemoveCartItem = () => {
-        dispatch(removeCartItemAction(productId))
     }
     return (
         <Spin spinning={_loading}>
-            <li className="list-group-item">
+            <li className={cn("list-group-item", props.className)}>
                 <div className="row align-items-center">
+                    {
+                        allowSelect && <Checkbox checked={selected} onChange={onSelectCartItem} />
+                    }
                     <div className="w-[120px]">
                         {/* Image */}
-                        <a href="./product.html">
+                        <a href="#">
                             <img className="img-fluid" src={product.thumbnail_url} alt="..." />
                         </a>
                     </div>
@@ -69,48 +68,51 @@ export const CartItem = ({ productId, product, quantity }) => {
                             </span>
                         </p>
                         {/*Footer */}
-                        <div className="d-flex align-items-center">
-                            {/* Select */}
-                            <div className="btn-group btn-quantity">
+                        {
+                            !hideAction && <div className="d-flex align-items-center">
+                                {/* Select */}
+                                <div className="btn-group btn-quantity">
+                                    <PopConfirm
+                                        open={openPopConfirmQuantity}
+                                        onOpenChange={visible => setOpenPopConfirmQuantity(visible)}
+                                        disabled={_quantity > 1 ? true : false} showCancel={false} okText="Xóa"
+                                        placement="bottomRight"
+                                        title="Thông báo" description="Bạn có chắc chắn muốn xóa sản phẩm này?"
+                                        onConfirm={() => {
+                                            setOpenPopConfirmQuantity(false)
+                                            onChangeQuantity(0)()
+                                        }}>
+                                        <button onClick={_quantity > 1 ? onChangeQuantity(_quantity - 1) : undefined} className="btn">-</button>
+                                    </PopConfirm>
+                                    <input onBlur={(ev) => {
+                                        let val = parseInt(ev.target.value)
+                                        if (!val) {
+                                            val = 1
+                                            setQuantity(val)
+                                        }
+                                        if (val !== quantity) {
+                                            onChangeQuantity(val)
+                                        }
+                                    }} value={_quantity} onChange={ev => setQuantity(ev.target.value)} />
+                                    <button onClick={onChangeQuantity(_quantity + 1)} className="btn">+</button>
+                                </div>
+                                {/* Remove */}
                                 <PopConfirm
-                                    open={openPopConfirmQuantity}
-                                    onOpenChange={visible => setOpenPopConfirmQuantity(visible)}
-                                    disabled={_quantity > 1 ? true : false} showCancel={false} okText="Xóa"
-                                    placement="bottomRight"
+                                    open={openPopConfirm}
+                                    onOpenChange={visible => setOpenPopConfirm(visible)}
+                                    showCancel={false} okText="Xóa" placement="bottomRight"
                                     title="Thông báo" description="Bạn có chắc chắn muốn xóa sản phẩm này?"
                                     onConfirm={() => {
-                                        setOpenPopConfirmQuantity(false)
-                                        onRemoveCartItem()
+                                        setOpenPopConfirm(false)
+                                        onChangeQuantity(0)()
                                     }}>
-                                    <button onClick={_quantity > 1 ? onDecrement : undefined} className="btn">-</button>
+                                    <a onClick={(ev) => ev.preventDefault()} className="font-size-xs text-gray-400 ml-auto" href="#!">
+                                        <i className="fe fe-x" /> Xóa
+                                    </a>
                                 </PopConfirm>
-                                <input onBlur={(ev) => {
-                                    let val = parseInt(ev.target.value)
-                                    if (!val) {
-                                        val = 1
-                                        setQuantity(val)
-                                    }
-                                    if (val !== quantity) {
-                                        onUpdateQuantity(val)
-                                    }
-                                }} value={_quantity} onChange={ev => setQuantity(ev.target.value)} />
-                                <button onClick={onIncrement} className="btn">+</button>
                             </div>
-                            {/* Remove */}
-                            <PopConfirm
-                                open={openPopConfirm}
-                                onOpenChange={visible => setOpenPopConfirm(visible)}
-                                showCancel={false} okText="Xóa" placement="bottomRight"
-                                title="Thông báo" description="Bạn có chắc chắn muốn xóa sản phẩm này?"
-                                onConfirm={() => {
-                                    setOpenPopConfirm(false)
-                                    onRemoveCartItem()
-                                }}>
-                                <a onClick={(ev) => ev.preventDefault()} className="font-size-xs text-gray-400 ml-auto" href="#!">
-                                    <i className="fe fe-x" /> Xóa
-                                </a>
-                            </PopConfirm>
-                        </div>
+                        }
+                        {footer}
                     </div>
                 </div>
             </li>

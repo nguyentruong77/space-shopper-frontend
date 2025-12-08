@@ -11,4 +11,16 @@ export const cartService = {
   removeItem(productId) {
     return http.delete(`${CART_API}/${productId}`);
   },
+  preCheckout(data) {
+    return http.post(`${CART_API}/pre-checkout`, data);
+  },
+  getPromotion(code) {
+    return http.post(`${CART_API}/promotion/${code}`);
+  },
+  getShippingMethod() {
+    return http.get(`${CART_API}/shipping-method`);
+  },
+  checkout(data) {
+    return http.post(`${CART_API}/checkout`, data);
+  },
 };
