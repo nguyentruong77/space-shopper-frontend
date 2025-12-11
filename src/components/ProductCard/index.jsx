@@ -1,19 +1,19 @@
 import { PATH } from '@/config'
 import { useAction } from '@/hooks/useAction'
 import { useAuth } from '@/hooks/useAuth'
+import { useCart } from '@/hooks/useCart'
 import { useCategory } from '@/hooks/useCategories'
 import { productService } from '@/services/product'
 import { updateCardItemAction } from '@/stores/cart'
 import { currency } from '@/utils'
 import { withListLoading } from '@/utils/withListLoading'
 import { useDispatch } from 'react-redux'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { PopConfirm } from '../PopConfirm'
 import { Rating } from '../Rating'
 import { Skeleton } from '../Skeleton'
-import { useCart } from '@/hooks/useCart'
 
-const ProductCard = ({ onRemoveWishlistSuccess, showRemove, showWishlist, id, images, categories, name, price, real_price, discount_rate, review_count, rating_average }) => {
+const ProductCard = ({ onRemoveWishlistSuccess, showRemove, showWishlist, id, slug, images, categories, name, price, real_price, discount_rate, review_count, rating_average }) => {
     const img1 = images?.[0]?.thumbnail_url
     const img2 = images?.[1] ? images?.[1]?.thumbnail_url : img1
     const category = useCategory(categories)
@@ -60,10 +60,10 @@ const ProductCard = ({ onRemoveWishlistSuccess, showRemove, showWishlist, id, im
                 {/* Image */}
                 <div className="card-img">
                     {/* Image */}
-                    <a className="card-img-hover" href="product.html">
+                    <Link className="card-img-hover" to={`/${slug}`}>
                         <img className="card-img-top card-img-back" src={img1} alt="..." />
                         <img className="card-img-top card-img-front" src={img2} alt="..." />
-                    </a>
+                    </Link>
                     {/* Actions */}
                     <div className="card-actions">
                         <span className="card-action">

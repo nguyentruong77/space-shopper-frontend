@@ -1,9 +1,99 @@
-import { useParams } from 'react-router-dom';
+import { Breadcrumb } from '@/components/Breadcrumb';
+import { Button } from '@/components/Button';
+import { Field } from '@/components/Field';
+import { Paginate } from '@/components/Paginate';
+import { Rating } from '@/components/Rating';
+import { ListReview } from '@/components/ReviewItem';
+import { ShortContent } from '@/components/ShortContent';
+import { Tab } from '@/components/Tab';
+import { PATH } from '@/config';
+import { useAction } from '@/hooks/useAction';
+import { useAuth } from '@/hooks/useAuth';
+import { useCart } from '@/hooks/useCart';
+import { useCategory } from '@/hooks/useCategories';
+import { useForm } from '@/hooks/useForm';
+import { useQuery } from '@/hooks/useQuery';
+import { productService } from '@/services/product';
+import { reviewService } from '@/services/review';
+import { updateCardItemAction } from '@/stores/cart';
+import { currency, handleError, required } from '@/utils';
+import { Image, message } from 'antd';
+import { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 
 export const ProductDetailPage = () => {
+    const [star, setStar] = useState(5)
+    const [openImageModal, setOpenImageModal] = useState(false)
+    const [currentImage, setCurrentImage] = useState(0)
+    const { user } = useAuth()
+    const { cart, loading: productLoading } = useCart()
+    const dispatch = useDispatch()
+    const navigate = useNavigate()
     const { slug } = useParams();
-    const [, id] = slug.split('-id');
-    console.log('Product ID:', id);
+    const [, id] = slug.split('-p');
+    const _addCartLoading = productLoading[id]
+    const { state } = useLocation()
+    const reviewForm = useForm({
+        content: [required()]
+    })
+    const { refetch: reviewAction, loading: reviewLoading } = useQuery({
+        enabled: false,
+        queryFn: ({ params }) => reviewService.addReview(...params)
+    })
+    const { data: detail, loading } = useQuery({
+        queryFn: () => productService.getProductDetail(id),
+        enabled: !!id,
+        onError: () => {
+            message.error("Sản phẩm không tồn tại")
+            navigate(PATH.Product)
+        }
+    })
+    const { data: reviews, loading: listReviewLoading, refetch: refetchReview } = useQuery({
+        queryFn: () => reviewService.getReview(id)
+    })
+    const category = useCategory(detail?.data?.categories)
+    const { data: product } = detail || {}
+    const onAddWishlist = useAction({
+        service: () => productService.addWishlist(id),
+        loadingMessage: `Đang thêm sản phẩm "${product?.name}" vào yêu thích`,
+        successMessage: `Thêm sản phẩm "${product?.name}" vào yêu thích thành công`,
+    })
+    if (loading) return null
+    const onAddCardItem = () => {
+        if (user) {
+            const { listItems } = cart
+            const _product = listItems.find(e => e.productId === id)
+
+            dispatch(updateCardItemAction({
+                productId: product.id,
+                quantity: _product?.quantity ? _product?.quantity + 1 : 1,
+                showPopOver: true,
+            }))
+        } else {
+            navigate(PATH.Account)
+        }
+    }
+    const onActiveImageModalCurry = (i) => () => {
+        setCurrentImage(i)
+        setOpenImageModal(true)
+    }
+    const onSubmitReview = async () => {
+        try {
+            if (reviewForm.validate()) {
+                await reviewAction(product.id, {
+                    orderId: state.orderId,
+                    content: reviewForm.values,
+                    star,
+                })
+                message.success("Viết đánh giá sản phẩm thành công")
+                navigate(window.location.pathname + window.location.search, { replace: true })
+                refetchReview()
+            }
+        } catch (error) {
+            handleError(error)
+        }
+    }
     return (
         <>
             {/* BREADCRUMB */}
@@ -11,18 +101,11 @@ export const ProductDetailPage = () => {
                 <div className="container">
                     <div className="row">
                         <div className="col-12">
-                            {/* Breadcrumb */}
-                            <ol className="breadcrumb mb-0 font-size-xs text-gray-400">
-                                <li className="breadcrumb-item">
-                                    <a className="text-gray-400" href="index.html">Home</a>
-                                </li>
-                                <li className="breadcrumb-item">
-                                    <a className="text-gray-400" href="shop.html">Women's Shoes</a>
-                                </li>
-                                <li className="breadcrumb-item active">
-                                    Leather Sneakers
-                                </li>
-                            </ol>
+                            <Breadcrumb>
+                                <Breadcrumb.Item to={PATH.Home}>Home</Breadcrumb.Item>
+                                <Breadcrumb.Item to={PATH.Product}>Sản phẩm</Breadcrumb.Item>
+                                <Breadcrumb.Item>{product.name}</Breadcrumb.Item>
+                            </Breadcrumb>
                         </div>
                     </div>
                 </div>
@@ -41,38 +124,41 @@ export const ProductDetailPage = () => {
                                             Sale
                                         </div>
                                         {/* Slider */}
-                                        <div className="mb-4" data-flickity="{&quot;draggable&quot;: false, &quot;fade&quot;: true}" id="productSlider">
+                                        <div className="mb-4">
                                             {/* Item */}
-                                            <a href="./img/products/product-7.jpg" data-fancybox>
-                                                <img src="./img/products/product-7.jpg" alt="..." className="card-img-top" />
-                                            </a>
-                                            {/* Item */}
-                                            <a href="./img/products/product-122.jpg" data-fancybox>
-                                                <img src="./img/products/product-122.jpg" alt="..." className="card-img-top" />
-                                            </a>
-                                            {/* Item */}
-                                            <a href="./img/products/product-146.jpg" data-fancybox>
-                                                <img src="./img/products/product-146.jpg" alt="..." className="card-img-top" />
-                                            </a>
+                                            <img onClick={onActiveImageModalCurry(0)} src={product.images[0].thumbnail_url} alt="..." className="card-img-top cursor pointer" />
+                                        </div>
+
+                                        <div style={{ display: 'none' }}>
+                                            <Image.PreviewGroup preview={{
+                                                current: currentImage,
+                                                visible: openImageModal,
+                                                onVisibleChange: vis => setOpenImageModal(vis),
+                                                countRender: (current, total) => `${product.name} - ${current} / ${total}`
+                                            }}>
+                                                {product.images.map(e => <Image src={e.thumbnail_url} />)}
+                                            </Image.PreviewGroup>
                                         </div>
                                     </div>
                                     {/* Slider */}
-                                    <div className="flickity-nav mx-n2 mb-10 mb-md-0" data-flickity="{&quot;asNavFor&quot;: &quot;#productSlider&quot;, &quot;contain&quot;: true, &quot;wrapAround&quot;: false}">
-                                        {/* Item */}
-                                        <div className="col-12 px-2" style={{ maxWidth: 113 }}>
-                                            {/* Image */}
-                                            <div className="embed-responsive embed-responsive-1by1 bg-cover" style={{ backgroundImage: 'url(./img/products/product-7.jpg)' }} />
-                                        </div>
-                                        {/* Item */}
-                                        <div className="col-12 px-2" style={{ maxWidth: 113 }}>
-                                            {/* Image */}
-                                            <div className="embed-responsive embed-responsive-1by1 bg-cover" style={{ backgroundImage: 'url(./img/products/product-122.jpg)' }} />
-                                        </div>
-                                        {/* Item */}
-                                        <div className="col-12 px-2" style={{ maxWidth: 113 }}>
-                                            {/* Image */}
-                                            <div className="embed-responsive embed-responsive-1by1 bg-cover" style={{ backgroundImage: 'url(./img/products/product-146.jpg)' }} />
-                                        </div>
+                                    <div className="flickity-nav mx-n2 mb-10 mb-md-0 flex">
+                                        {
+                                            product.images.slice(0, 4).map((e, i) => (
+                                                <div onClick={onActiveImageModalCurry(i)} key={e.thumbnail_url} className="col-12 px-2 cursor pointer" style={{ maxWidth: 113 }}>
+                                                    <div className="embed-responsive embed-responsive-1by1 bg-cover" style={{ backgroundImage: `url(${e.thumbnail_url})` }} />
+                                                </div>
+                                            ))
+                                        }
+                                        {
+                                            product.images.length === 5 && <div onClick={onActiveImageModalCurry(4)} className="col-12 px-2 cursor pointer" style={{ maxWidth: 113 }}>
+                                                <div className="embed-responsive embed-responsive-1by1 bg-cover" style={{ backgroundImage: `url(${product.images[4]})` }} />
+                                            </div>
+                                        }
+                                        {
+                                            product.images.length > 5 && <div onClick={onActiveImageModalCurry(5)} className="col-12 px-2 cursor pointer" style={{ maxWidth: 113 }}>
+                                                <div className="embed-responsive embed-responsive-1by1 bg-cover flex items-center justify-center text-center" style={{ background: "#eee" }} >+{product.images.length - 4} <br /> ảnh</div>
+                                            </div>
+                                        }
                                     </div>
                                 </div>
                                 <div className="col-12 col-md-6 pl-lg-10">
@@ -80,177 +166,57 @@ export const ProductDetailPage = () => {
                                     <div className="row mb-1">
                                         <div className="col">
                                             {/* Preheading */}
-                                            <a className="text-muted" href="shop.html">Sneakers</a>
+                                            <a className="text-muted" href="shop.html">{category?.title}</a>
                                         </div>
-                                        <div className="col-auto">
+                                        <div className="col-auto flex items-center">
                                             {/* Rating */}
-                                            <div className="rating font-size-xs text-dark" data-value={4}>
-                                                <div className="rating-item">
-                                                    <i className="fas fa-star" />
-                                                </div>
-                                                <div className="rating-item">
-                                                    <i className="fas fa-star" />
-                                                </div>
-                                                <div className="rating-item">
-                                                    <i className="fas fa-star" />
-                                                </div>
-                                                <div className="rating-item">
-                                                    <i className="fas fa-star" />
-                                                </div>
-                                                <div className="rating-item">
-                                                    <i className="fas fa-star" />
-                                                </div>
-                                            </div>
+                                            <Rating value={detail.data.review_count} />
                                             <a className="font-size-sm text-reset ml-2" href="#reviews">
-                                                Reviews (6)
+                                                Reviews ({product.review_count})
                                             </a>
                                         </div>
                                     </div>
                                     {/* Heading */}
-                                    <h3 className="mb-2">Leather Sneakers</h3>
+                                    <h3 className="mb-2">{product.name}</h3>
                                     {/* Price */}
                                     <div className="mb-7">
-                                        <span className="font-size-lg font-weight-bold text-gray-350 text-decoration-line-through">$115.00</span>
-                                        <span className="ml-1 font-size-h5 font-weight-bolder text-primary">$85.00</span>
+                                        {
+                                            product.real_price < product.price ? <>
+                                                <span className="font-size-lg font-weight-bold text-gray-350 text-decoration-line-through">{currency(product.price)}</span>
+                                                <span className="ml-1 font-size-h5 font-weight-bolder text-primary">{currency(product.real_price)}</span>
+                                            </> : <span className="ml-1 font-size-h5 font-weight-bolder text-primary">{currency(product.real_price)}</span>
+                                        }
                                         <span className="font-size-sm ml-1">(In Stock)</span>
                                     </div>
                                     {/* Form */}
-                                    <form>
-                                        <div className="form-group">
-                                            {/* Label */}
-                                            <p className="mb-5">
-                                                Color: <strong id="colorCaption">White</strong>
-                                            </p>
-                                            {/* Radio */}
-                                            <div className="mb-8 ml-n1">
-                                                <div className="custom-control custom-control-inline custom-control-img">
-                                                    <input type="radio" className="custom-control-input" id="imgRadioOne" name="imgRadio" data-toggle="form-caption" data-target="#colorCaption" defaultValue="White" defaultChecked />
-                                                    <label className="custom-control-label" htmlFor="imgRadioOne">
-                                                        <span className="embed-responsive embed-responsive-1by1 bg-cover" style={{ backgroundImage: 'url(./img/products/product-7.jpg)' }} />
-                                                    </label>
-                                                </div>
-                                                <div className="custom-control custom-control-inline custom-control-img">
-                                                    <input type="radio" className="custom-control-input" id="imgRadioTwo" name="imgRadio" data-toggle="form-caption" data-target="#colorCaption" defaultValue="Black" />
-                                                    <label className="custom-control-label" htmlFor="imgRadioTwo">
-                                                        <span className="embed-responsive embed-responsive-1by1 bg-cover" style={{ backgroundImage: 'url(./img/products/product-49.jpg)' }} />
-                                                    </label>
-                                                </div>
-                                            </div>
+                                    <div className="form-row mb-7">
+                                        <p className='col-12'>{product.short_description}</p>
+                                        <div className="col-12 col-lg">
+                                            {/* Submit */}
+                                            <Button loading={_addCartLoading} onClick={onAddCardItem}>
+                                                Add to Cart <i className="fe fe-shopping-cart ml-2" />
+                                            </Button>
                                         </div>
-                                        <div className="form-group">
-                                            {/* Label */}
-                                            <p className="mb-5">
-                                                Size: <strong><span id="sizeCaption">7.5</span> US</strong>
-                                            </p>
-                                            {/* Radio */}
-                                            <div className="mb-2">
-                                                <div className="custom-control custom-control-inline custom-control-size mb-2">
-                                                    <input type="radio" className="custom-control-input" name="sizeRadio" id="sizeRadioOne" defaultValue={6} data-toggle="form-caption" data-target="#sizeCaption" />
-                                                    <label className="custom-control-label" htmlFor="sizeRadioOne">6</label>
-                                                </div>
-                                                <div className="custom-control custom-control-inline custom-control-size mb-2">
-                                                    <input type="radio" className="custom-control-input" name="sizeRadio" id="sizeRadioTwo" defaultValue="6.5" data-toggle="form-caption" data-target="#sizeCaption" disabled />
-                                                    <label className="custom-control-label" htmlFor="sizeRadioTwo">6.5</label>
-                                                </div>
-                                                <div className="custom-control custom-control-inline custom-control-size mb-2">
-                                                    <input type="radio" className="custom-control-input" name="sizeRadio" id="sizeRadioThree" defaultValue={7} data-toggle="form-caption" data-target="#sizeCaption" />
-                                                    <label className="custom-control-label" htmlFor="sizeRadioThree">7</label>
-                                                </div>
-                                                <div className="custom-control custom-control-inline custom-control-size mb-2">
-                                                    <input type="radio" className="custom-control-input" name="sizeRadio" id="sizeRadioFour" defaultValue="7.5" data-toggle="form-caption" data-target="#sizeCaption" defaultChecked />
-                                                    <label className="custom-control-label" htmlFor="sizeRadioFour">7.5</label>
-                                                </div>
-                                                <div className="custom-control custom-control-inline custom-control-size mb-2">
-                                                    <input type="radio" className="custom-control-input" name="sizeRadio" id="sizeRadioFive" defaultValue={8} data-toggle="form-caption" data-target="#sizeCaption" />
-                                                    <label className="custom-control-label" htmlFor="sizeRadioFive">8</label>
-                                                </div>
-                                                <div className="custom-control custom-control-inline custom-control-size mb-2">
-                                                    <input type="radio" className="custom-control-input" name="sizeRadio" id="sizeRadioSix" defaultValue="8.5" data-toggle="form-caption" data-target="#sizeCaption" />
-                                                    <label className="custom-control-label" htmlFor="sizeRadioSix">8.5</label>
-                                                </div>
-                                                <div className="custom-control custom-control-inline custom-control-size mb-2">
-                                                    <input type="radio" className="custom-control-input" name="sizeRadio" id="sizeRadioSeven" defaultValue={9} data-toggle="form-caption" data-target="#sizeCaption" disabled />
-                                                    <label className="custom-control-label" htmlFor="sizeRadioSeven">9</label>
-                                                </div>
-                                                <div className="custom-control custom-control-inline custom-control-size mb-2">
-                                                    <input type="radio" className="custom-control-input" name="sizeRadio" id="sizeRadioEight" defaultValue="9.5" data-toggle="form-caption" data-target="#sizeCaption" disabled />
-                                                    <label className="custom-control-label" htmlFor="sizeRadioEight">9.5</label>
-                                                </div>
-                                                <div className="custom-control custom-control-inline custom-control-size mb-2">
-                                                    <input type="radio" className="custom-control-input" name="sizeRadio" id="sizeRadioNine" defaultValue={10} data-toggle="form-caption" data-target="#sizeCaption" />
-                                                    <label className="custom-control-label" htmlFor="sizeRadioNine">10</label>
-                                                </div>
-                                                <div className="custom-control custom-control-inline custom-control-size mb-2">
-                                                    <input type="radio" className="custom-control-input" name="sizeRadio" id="sizeRadioTen" defaultValue="10.5" data-toggle="form-caption" data-target="#sizeCaption" />
-                                                    <label className="custom-control-label" htmlFor="sizeRadioTen">10.5</label>
-                                                </div>
-                                                <div className="custom-control custom-control-inline custom-control-size mb-2">
-                                                    <input type="radio" className="custom-control-input" name="sizeRadio" id="sizeRadioEleven" defaultValue={11} data-toggle="form-caption" data-target="#sizeCaption" />
-                                                    <label className="custom-control-label" htmlFor="sizeRadioEleven">11</label>
-                                                </div>
-                                                <div className="custom-control custom-control-inline custom-control-size mb-2">
-                                                    <input type="radio" className="custom-control-input" name="sizeRadio" id="sizeRadioTwelve" defaultValue={12} data-toggle="form-caption" data-target="#sizeCaption" />
-                                                    <label className="custom-control-label" htmlFor="sizeRadioTwelve">12</label>
-                                                </div>
-                                                <div className="custom-control custom-control-inline custom-control-size mb-2">
-                                                    <input type="radio" className="custom-control-input" name="sizeRadio" id="sizeRadioThirteen" defaultValue={13} data-toggle="form-caption" data-target="#sizeCaption" />
-                                                    <label className="custom-control-label" htmlFor="sizeRadioThirteen">13</label>
-                                                </div>
-                                                <div className="custom-control custom-control-inline custom-control-size mb-2">
-                                                    <input type="radio" className="custom-control-input" name="sizeRadio" id="sizeRadioFourteen" defaultValue={14} data-toggle="form-caption" data-target="#sizeCaption" />
-                                                    <label className="custom-control-label" htmlFor="sizeRadioFourteen">14</label>
-                                                </div>
-                                            </div>
-                                            {/* Size chart */}
-                                            <p className="mb-8">
-                                                <img src="./img/icons/icon-ruler.svg" alt="..." className="img-fluid" /> <a className="text-reset text-decoration-underline ml-3" data-toggle="modal" href="#modalSizeChart">Size
-                                                    chart</a>
-                                            </p>
-                                            <div className="form-row mb-7">
-                                                <div className="col-12 col-lg-auto">
-                                                    {/* Quantity */}
-                                                    <select className="custom-select mb-2">
-                                                        <option value={1} selected>1</option>
-                                                        <option value={2}>2</option>
-                                                        <option value={3}>3</option>
-                                                        <option value={4}>4</option>
-                                                        <option value={5}>5</option>
-                                                    </select>
-                                                </div>
-                                                <div className="col-12 col-lg">
-                                                    {/* Submit */}
-                                                    <button type="submit" className="btn btn-block btn-dark mb-2">
-                                                        Add to Cart <i className="fe fe-shopping-cart ml-2" />
-                                                    </button>
-                                                </div>
-                                                <div className="col-12 col-lg-auto">
-                                                    {/* Wishlist */}
-                                                    <button className="btn btn-outline-dark btn-block mb-2" data-toggle="button">
-                                                        Wishlist <i className="fe fe-heart ml-2" />
-                                                    </button>
-                                                </div>
-                                            </div>
-                                            {/* Text */}
-                                            <p>
-                                                <span className="text-gray-500">Is your size/color sold out?</span>
-                                                <a className="text-reset text-decoration-underline" data-toggle="modal" href="#modalWaitList">Join the
-                                                    Wait List!</a>
-                                            </p>
-                                            {/* Share */}
-                                            <p className="mb-0 flex gap-2">
-                                                <span className="mr-4">Share:</span>
-                                                <a className="btn btn-xxs btn-circle btn-light font-size-xxxs text-gray-350" href="#!">
-                                                    <i className="fab fa-twitter" />
-                                                </a>
-                                                <a className="btn btn-xxs btn-circle btn-light font-size-xxxs text-gray-350" href="#!">
-                                                    <i className="fab fa-facebook-f" />
-                                                </a>
-                                                <a className="btn btn-xxs btn-circle btn-light font-size-xxxs text-gray-350" href="#!">
-                                                    <i className="fab fa-pinterest-p" />
-                                                </a>
-                                            </p>
+                                        <div className="col-12 col-lg-auto">
+                                            {/* Wishlist */}
+                                            <Button outline onClick={onAddWishlist}>
+                                                Wishlist <i className="fe fe-heart ml-2" />
+                                            </Button>
                                         </div>
-                                    </form>
+                                    </div>
+                                    {/* Share */}
+                                    <p className="mb-0 flex gap-2">
+                                        <span className="mr-4">Share:</span>
+                                        <a className="btn btn-xxs btn-circle btn-light font-size-xxxs text-gray-350" href="#!">
+                                            <i className="fab fa-twitter" />
+                                        </a>
+                                        <a className="btn btn-xxs btn-circle btn-light font-size-xxxs text-gray-350" href="#!">
+                                            <i className="fab fa-facebook-f" />
+                                        </a>
+                                        <a className="btn btn-xxs btn-circle btn-light font-size-xxxs text-gray-350" href="#!">
+                                            <i className="fab fa-pinterest-p" />
+                                        </a>
+                                    </p>
                                 </div>
                             </div>
                         </div>
@@ -260,164 +226,123 @@ export const ProductDetailPage = () => {
             {/* DESCRIPTION */}
             <section className="pt-11">
                 <div className="container">
-                    <div className="row">
-                        <div className="col-12">
-                            {/* Nav */}
-                            <div className="nav nav-tabs nav-overflow justify-content-start justify-content-md-center border-bottom">
-                                <a className="nav-link active" data-toggle="tab" href="#descriptionTab">
-                                    Description
-                                </a>
-                                <a className="nav-link" data-toggle="tab" href="#sizeTab">
-                                    Size &amp; Fit
-                                </a>
-                                <a className="nav-link" data-toggle="tab" href="#shippingTab">
-                                    Shipping &amp; Return
-                                </a>
-                            </div>
-                            {/* Content */}
-                            <div className="tab-content">
-                                <div className="tab-pane fade show active" id="descriptionTab">
-                                    <div className="row justify-content-center py-9">
-                                        <div className="col-12">
-                                            <div className="row">
-                                                <div className="col-12">
-                                                    {/* Text */}
-                                                    <p className="text-gray-500">
-                                                        Won't herb first male seas, beast. Let upon, female upon third fifth every. Man subdue rule
-                                                        after years herb after
-                                                        form. And image may, morning. Behold in tree day sea that together cattle whose. Fifth gathering
-                                                        brought
-                                                        bearing. Abundantly creeping whose. Beginning form have void two. A whose.
-                                                    </p>
-                                                </div>
-                                                <div className="col-12 col-md-6">
-                                                    {/* List */}
-                                                    <ul className="list list-unstyled mb-md-0 text-gray-500">
-                                                        <li>
-                                                            <strong className="text-body">SKU</strong>: #61590437
-                                                        </li>
-                                                        <li>
-                                                            <strong className="text-body">Occasion</strong>: Lifestyle, Sport
-                                                        </li>
-                                                        <li>
-                                                            <strong className="text-body">Country</strong>: Italy
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                                <div className="col-12 col-md-6">
-                                                    {/* List */}
-                                                    <ul className="list list-unstyled mb-0">
-                                                        <li>
-                                                            <strong>Outer</strong>: Leather 100%, Polyamide 100%
-                                                        </li>
-                                                        <li>
-                                                            <strong>Lining</strong>: Polyester 100%
-                                                        </li>
-                                                        <li>
-                                                            <strong>CounSoletry</strong>: Rubber 100%
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
+                    <Tab removeOnDeActive defaultActive="description">
+                        <div className="row">
+                            <div className="col-12">
+                                {/* Nav */}
+                                <div className="nav nav-tabs nav-overflow justify-content-start justify-content-md-center border-bottom">
+                                    <Tab.Title value="description">
+                                        Description
+                                    </Tab.Title>
+                                    <Tab.Title value="size">
+                                        Size &amp; Fit
+                                    </Tab.Title>
+                                    <Tab.Title value="shipping-return">
+                                        Shipping &amp; Return
+                                    </Tab.Title>
                                 </div>
-                                <div className="tab-pane fade" id="sizeTab">
-                                    <div className="row justify-content-center py-9">
-                                        <div className="col-12">
-                                            <div className="row">
-                                                <div className="col-12 col-md-6">
-                                                    {/* Text */}
-                                                    <p className="mb-4">
-                                                        <strong>Fitting information:</strong>
-                                                    </p>
-                                                    {/* List */}
-                                                    <ul className="mb-md-0 text-gray-500">
-                                                        <li>
-                                                            Upon seas hath every years have whose
-                                                            subdue creeping they're it were.
-                                                        </li>
-                                                        <li>
-                                                            Make great day bearing.
-                                                        </li>
-                                                        <li>
-                                                            For the moveth is days don't said days.
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                                <div className="col-12 col-md-6">
-                                                    {/* Text */}
-                                                    <p className="mb-4">
-                                                        <strong>Model measurements:</strong>
-                                                    </p>
-                                                    {/* List */}
-                                                    <ul className="list-unstyled text-gray-500">
-                                                        <li>Height: 1.80 m</li>
-                                                        <li>Bust/Chest: 89 cm</li>
-                                                        <li>Hips: 91 cm</li>
-                                                        <li>Waist: 65 cm</li>
-                                                        <li>Model size: M</li>
-                                                    </ul>
-                                                    {/* Size */}
-                                                    <p className="mb-0">
-                                                        <img src="./img/icons/icon-ruler.svg" alt="..." className="img-fluid" />
-                                                        <a className="text-reset text-decoration-underline ml-3" data-toggle="modal" href="#modalSizeChart">Size chart</a>
-                                                    </p>
+                                {/* Content */}
+                                <div className="tab-content">
+                                    <Tab.Content value="description">
+                                        <ShortContent className='py-10' dangerouslySetInnerHTML={{ __html: product.description }} />
+                                    </Tab.Content>
+                                    <Tab.Content value="size">
+                                        <div className="row justify-content-center py-9">
+                                            <div className="col-12">
+                                                <div className="row">
+                                                    <div className="col-12 col-md-6">
+                                                        {/* Text */}
+                                                        <p className="mb-4">
+                                                            <strong>Fitting information:</strong>
+                                                        </p>
+                                                        {/* List */}
+                                                        <ul className="mb-md-0 text-gray-500">
+                                                            <li>
+                                                                Upon seas hath every years have whose
+                                                                subdue creeping they're it were.
+                                                            </li>
+                                                            <li>
+                                                                Make great day bearing.
+                                                            </li>
+                                                            <li>
+                                                                For the moveth is days don't said days.
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                    <div className="col-12 col-md-6">
+                                                        {/* Text */}
+                                                        <p className="mb-4">
+                                                            <strong>Model measurements:</strong>
+                                                        </p>
+                                                        {/* List */}
+                                                        <ul className="list-unstyled text-gray-500">
+                                                            <li>Height: 1.80 m</li>
+                                                            <li>Bust/Chest: 89 cm</li>
+                                                            <li>Hips: 91 cm</li>
+                                                            <li>Waist: 65 cm</li>
+                                                            <li>Model size: M</li>
+                                                        </ul>
+                                                        {/* Size */}
+                                                        <p className="mb-0">
+                                                            <img src="./img/icons/icon-ruler.svg" alt="..." className="img-fluid" />
+                                                            <a className="text-reset text-decoration-underline ml-3" data-toggle="modal" href="#modalSizeChart">Size chart</a>
+                                                        </p>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-                                </div>
-                                <div className="tab-pane fade" id="shippingTab">
-                                    <div className="row justify-content-center py-9">
-                                        <div className="col-12">
-                                            {/* Table */}
-                                            <div className="table-responsive">
-                                                <table className="table table-bordered table-sm table-hover">
-                                                    <thead>
-                                                        <tr>
-                                                            <th>Shipping Options</th>
-                                                            <th>Delivery Time</th>
-                                                            <th>Price</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        <tr>
-                                                            <td>Standard Shipping</td>
-                                                            <td>Delivery in 5 - 7 working days</td>
-                                                            <td>$8.00</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>Express Shipping</td>
-                                                            <td>Delivery in 3 - 5 working days</td>
-                                                            <td>$12.00</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>1 - 2 day Shipping</td>
-                                                            <td>Delivery in 1 - 2 working days</td>
-                                                            <td>$12.00</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>Free Shipping</td>
-                                                            <td>
-                                                                Living won't the He one every subdue meat replenish
-                                                                face was you morning firmament darkness.
-                                                            </td>
-                                                            <td>$0.00</td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
+                                    </Tab.Content>
+                                    <Tab.Content value="shipping-return">
+                                        <div className="row justify-content-center py-9">
+                                            <div className="col-12">
+                                                {/* Table */}
+                                                <div className="table-responsive">
+                                                    <table className="table table-bordered table-sm table-hover">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Shipping Options</th>
+                                                                <th>Delivery Time</th>
+                                                                <th>Price</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr>
+                                                                <td>Standard Shipping</td>
+                                                                <td>Delivery in 5 - 7 working days</td>
+                                                                <td>$8.00</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>Express Shipping</td>
+                                                                <td>Delivery in 3 - 5 working days</td>
+                                                                <td>$12.00</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>1 - 2 day Shipping</td>
+                                                                <td>Delivery in 1 - 2 working days</td>
+                                                                <td>$12.00</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>Free Shipping</td>
+                                                                <td>
+                                                                    Living won't the He one every subdue meat replenish
+                                                                    face was you morning firmament darkness.
+                                                                </td>
+                                                                <td>$0.00</td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                                {/* Caption */}
+                                                <p className="mb-0 text-gray-500">
+                                                    May, life blessed night so creature likeness their, for. <a className="text-body text-decoration-underline" href="#!">Find out more</a>
+                                                </p>
                                             </div>
-                                            {/* Caption */}
-                                            <p className="mb-0 text-gray-500">
-                                                May, life blessed night so creature likeness their, for. <a className="text-body text-decoration-underline" href="#!">Find out more</a>
-                                            </p>
                                         </div>
-                                    </div>
+                                    </Tab.Content>
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </Tab>
                 </div>
             </section>
             {/* REVIEWS */}
@@ -428,11 +353,11 @@ export const ProductDetailPage = () => {
                             {/* Heading */}
                             <h4 className="mb-10 text-center">Customer Reviews</h4>
                             {/* New Review */}
-                            <div className="mb-10">
-                                {/* Divider */}
-                                <hr className="my-8" />
-                                {/* Form */}
-                                <form>
+                            {state?.orderId &&
+                                <div className="mb-10">
+                                    {/* Divider */}
+                                    <hr className="my-8" />
+                                    {/* Form */}
                                     <div className="row">
                                         <div className="col-12 mb-6 text-center">
                                             {/* Text */}
@@ -441,24 +366,22 @@ export const ProductDetailPage = () => {
                                             </p>
                                             {/* Rating form */}
                                             <div className="rating-form">
-                                                {/* Input */}
-                                                <input className="rating-input" type="range" min={1} max={5} defaultValue={5} />
                                                 {/* Rating */}
-                                                <div className="rating h5 text-dark" data-value={5}>
+                                                <div className="rating h5 text-dark" data-value={star}>
                                                     <div className="rating-item">
-                                                        <i className="fas fa-star" />
+                                                        <i className="fas fa-star cursor-pointer" onClick={() => setStar(1)} />
                                                     </div>
                                                     <div className="rating-item">
-                                                        <i className="fas fa-star" />
+                                                        <i className="fas fa-star cursor-pointer" onClick={() => setStar(2)} />
                                                     </div>
                                                     <div className="rating-item">
-                                                        <i className="fas fa-star" />
+                                                        <i className="fas fa-star cursor-pointer" onClick={() => setStar(3)} />
                                                     </div>
                                                     <div className="rating-item">
-                                                        <i className="fas fa-star" />
+                                                        <i className="fas fa-star cursor-pointer" onClick={() => setStar(4)} />
                                                     </div>
                                                     <div className="rating-item">
-                                                        <i className="fas fa-star" />
+                                                        <i className="fas fa-star cursor-pointer" onClick={() => setStar(5)} />
                                                     </div>
                                                 </div>
                                             </div>
@@ -467,37 +390,39 @@ export const ProductDetailPage = () => {
                                             {/* Name */}
                                             <div className="form-group">
                                                 <label className="sr-only" htmlFor="reviewText">Review:</label>
-                                                <textarea className="form-control form-control-sm" id="reviewText" rows={5} placeholder="Review *" required defaultValue={""} />
+                                                <Field
+                                                    {...reviewForm.register('content')}
+                                                    placeholder="Review *"
+                                                    renderField={(props) => {
+                                                        <textarea {...props} onChange={ev => props?.onChange(ev.target.value)} className="form-control form-control-sm" rows={5} />
+                                                    }}
+                                                />
                                             </div>
                                         </div>
-                                        <div className="col-12 text-center">
+                                        <div className="col-12 text-center flex justify-center">
                                             {/* Button */}
-                                            <button className="btn btn-outline-dark" type="submit">
+                                            <Button loading={reviewLoading} outline onClick={onSubmitReview}>
                                                 Post Review
-                                            </button>
+                                            </Button>
                                         </div>
                                     </div>
-                                </form>
-                            </div>
+                                </div>
+                            }
                             {/* Header */}
                             <div className="row align-items-center">
-                                <div className="col-12 col-md-auto">
-                                    {/* Dropdown */}
+                                {/* <div className="col-12 col-md-auto">
                                     <div className="dropdown mb-4 mb-md-0">
-                                        {/* Toggle */}
                                         <a className="dropdown-toggle text-reset" data-toggle="dropdown" href="#">
                                             <strong>Sort by: Newest</strong>
                                         </a>
-                                        {/* Menu */}
                                         <div className="dropdown-menu mt-3">
                                             <a className="dropdown-item" href="#!">Newest</a>
                                             <a className="dropdown-item" href="#!">Oldest</a>
                                         </div>
                                     </div>
-                                </div>
+                                </div> */}
                                 <div className="col-12 col-md text-md-right">
-                                    {/* Rating */}
-                                    <div className="rating text-dark h6 mb-4 mb-md-0" data-value={4}>
+                                    {/* <div className="rating text-dark h6 mb-4 mb-md-0" data-value={4}>
                                         <div className="rating-item">
                                             <i className="fas fa-star" />
                                         </div>
@@ -513,150 +438,21 @@ export const ProductDetailPage = () => {
                                         <div className="rating-item">
                                             <i className="fas fa-star" />
                                         </div>
-                                    </div>
-                                    {/* Count */}
-                                    <strong className="font-size-sm ml-2">Reviews (3)</strong>
+                                    </div> */}
+                                    <strong className="font-size-sm ml-2">Reviews ({reviews?.paginate?.count})</strong>
                                 </div>
                             </div>
                             {/* Reviews */}
                             <div className="mt-8">
-                                {/* Review */}
-                                <div className="review">
-                                    <div className="review-body">
-                                        <div className="row">
-                                            <div className="col-12 col-md-auto">
-                                                {/* Avatar */}
-                                                <div className="avatar avatar-xxl mb-6 mb-md-0">
-                                                    <span className="avatar-title rounded-circle">
-                                                        <i className="fa fa-user" />
-                                                    </span>
-                                                </div>
-                                            </div>
-                                            <div className="col-12 col-md">
-                                                {/* Header */}
-                                                <div className="row mb-6">
-                                                    <div className="col-12">
-                                                        {/* Rating */}
-                                                        <div className="rating font-size-sm text-dark" data-value={5}>
-                                                            <div className="rating-item">
-                                                                <i className="fas fa-star" />
-                                                            </div>
-                                                            <div className="rating-item">
-                                                                <i className="fas fa-star" />
-                                                            </div>
-                                                            <div className="rating-item">
-                                                                <i className="fas fa-star" />
-                                                            </div>
-                                                            <div className="rating-item">
-                                                                <i className="fas fa-star" />
-                                                            </div>
-                                                            <div className="rating-item">
-                                                                <i className="fas fa-star" />
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div className="col-12">
-                                                        {/* Time */}
-                                                        <span className="font-size-xs text-muted">
-                                                            Logan Edwards, <time dateTime="2019-07-25">25 Jul 2019</time>
-                                                        </span>
-                                                    </div>
-                                                </div>
-                                                {/* Title */}
-                                                <p className="mb-2 font-size-lg font-weight-bold">
-                                                    So cute!
-                                                </p>
-                                                {/* Text */}
-                                                <p className="text-gray-500">
-                                                    Justo ut diam erat hendrerit. Morbi porttitor, per eu. Sodales curabitur diam sociis. Taciti
-                                                    lobortis nascetur. Ante laoreet odio hendrerit.
-                                                    Dictumst curabitur nascetur lectus potenti dis sollicitudin habitant quis vestibulum.
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                {/* Review */}
-                                <div className="review">
-                                    {/* Body */}
-                                    <div className="review-body">
-                                        <div className="row">
-                                            <div className="col-12 col-md-auto">
-                                                {/* Avatar */}
-                                                <div className="avatar avatar-xxl mb-6 mb-md-0">
-                                                    <span className="avatar-title rounded-circle">
-                                                        <i className="fa fa-user" />
-                                                    </span>
-                                                </div>
-                                            </div>
-                                            <div className="col-12 col-md">
-                                                {/* Header */}
-                                                <div className="row mb-6">
-                                                    <div className="col-12">
-                                                        {/* Rating */}
-                                                        <div className="rating font-size-sm text-dark" data-value={3}>
-                                                            <div className="rating-item">
-                                                                <i className="fas fa-star" />
-                                                            </div>
-                                                            <div className="rating-item">
-                                                                <i className="fas fa-star" />
-                                                            </div>
-                                                            <div className="rating-item">
-                                                                <i className="fas fa-star" />
-                                                            </div>
-                                                            <div className="rating-item">
-                                                                <i className="fas fa-star" />
-                                                            </div>
-                                                            <div className="rating-item">
-                                                                <i className="fas fa-star" />
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div className="col-12">
-                                                        {/* Time */}
-                                                        <span className="font-size-xs text-muted">
-                                                            Sophie Casey, <time dateTime="2019-07-07">07 Jul 2019</time>
-                                                        </span>
-                                                    </div>
-                                                </div>
-                                                {/* Title */}
-                                                <p className="mb-2 font-size-lg font-weight-bold">
-                                                    Cute, but too small
-                                                </p>
-                                                {/* Text */}
-                                                <p className="text-gray-500">
-                                                    Shall good midst can't. Have fill own his multiply the divided. Thing great. Of heaven whose
-                                                    signs.
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                                <ListReview
+                                    loading={listReviewLoading}
+                                    loadingCount={5}
+                                    data={reviews?.data}
+
+                                />
                             </div>
                             {/* Pagination */}
-                            <nav className="d-flex justify-content-center mt-9">
-                                <ul className="pagination pagination-sm text-gray-400">
-                                    <li className="page-item">
-                                        <a className="page-link page-link-arrow" href="#">
-                                            <i className="fa fa-caret-left" />
-                                        </a>
-                                    </li>
-                                    <li className="page-item active">
-                                        <a className="page-link" href="#">1</a>
-                                    </li>
-                                    <li className="page-item">
-                                        <a className="page-link" href="#">2</a>
-                                    </li>
-                                    <li className="page-item">
-                                        <a className="page-link" href="#">3</a>
-                                    </li>
-                                    <li className="page-item">
-                                        <a className="page-link page-link-arrow" href="#">
-                                            <i className="fa fa-caret-right" />
-                                        </a>
-                                    </li>
-                                </ul>
-                            </nav>
+                            <Paginate totalPage={reviews?.paginate?.totalPage} />
                         </div>
                     </div>
                 </div>

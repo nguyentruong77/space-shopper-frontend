@@ -13,7 +13,7 @@ Breadcrumb.Item = ({ to, children }) => {
     return (
         <li className="breadcrumb-item">
             {
-                to ? <Link className="text-gray-400">{children}</Link> : children
+                to ? <Link className="text-gray-400" to={to}>{children}</Link> : children
             }
         </li>
     )

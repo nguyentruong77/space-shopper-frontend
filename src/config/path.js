@@ -21,4 +21,5 @@ export const PATH = {
     EditPayment: PROFILE + "/so-thanh-toan/edit/:id",
   },
   Account: "/tai-khoan",
+  ResetPassword: "/reset-password",
 };

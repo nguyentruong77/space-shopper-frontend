@@ -1,1 +1,5 @@
 @import "tailwindcss" hide(base);
+
+.ant-modal-content {
+  padding: 0 !important;
+}

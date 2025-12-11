@@ -28,7 +28,7 @@ const TITLE_DATE_FIELD = {
 
 export const OrderStatus = ({ order }) => {
     const { _id, status, finishedDate, createdAt, total } = order
-    const date = moment(order[TITLE_DATE_FIELD[status]].format('DD/MM/YYYY')
+    const date = moment(order[TITLE_DATE_FIELD[status]]).format('DD/MM/YYYY')
     return (
         <div className="card card-sm">
             <div className="card-body bg-light">

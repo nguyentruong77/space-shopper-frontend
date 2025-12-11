@@ -7,7 +7,7 @@ import { currency } from '@/utils'
 import { message } from 'antd'
 import moment from 'moment'
 import React from 'react'
-import { useNavigate, useParams } from 'react-router-dom'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 
 const SHIPPING = {
     'giao-hang-nhanh': 'Giao hàng nhanh',
@@ -166,7 +166,7 @@ export const OrderDetailPage = () => {
                                                 checkReturn && <Button outline className="btn-xs">Đổi trả</Button>
                                             }
                                             {["finished", "cancel"].includes(status) && <Button outline className="btn-xs">Mua lại</Button>}
-                                            <a href="#" className="btn btn-sm btn-block btn-outline-dark">Viết review</a>
+                                            {status === "finished" && !e.review && <Link to={`/${e.product.slug}`} state={{ orderId: detail.data._id }} className="btn btn-xs btn-block btn-outline-dark">Viết review</Link>}
                                         </div>
                                     </div>
                                 </div>

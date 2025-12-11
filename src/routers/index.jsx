@@ -12,6 +12,7 @@ import { createBrowserRouter } from "react-router-dom";
 import { ViewCart } from "@/pages/gio-hang";
 import { Checkout } from "@/pages/checkout";
 import { OrderComplete } from "@/pages/dat-hang-thanh-cong";
+import { ResetPasswordPage } from "@/pages/reset-password";
 
 const routes = [
     {
@@ -53,9 +54,12 @@ const routes = [
                 element: <GuestRoute redirect={PATH.Profile.index} />,
                 children: [
                     {
-                        index: true,
                         element: <AccountPage />,
                         path: PATH.Account,
+                    },
+                    {
+                        element: <ResetPasswordPage />,
+                        path: PATH.ResetPassword,
                     }
                 ],
             },
