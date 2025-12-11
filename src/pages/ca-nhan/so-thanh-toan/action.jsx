@@ -80,7 +80,7 @@ export const ActionPaymentPage = () => {
     return (
         <>
             <Helmet>
-                <title>Add Debit / Credit Card</title>
+                <title>{id ? "Chỉnh sửa phương thức thanh toán" : "Thêm phương thức thanh toán"}</title>
             </Helmet>
             {
                 step === 0 &&

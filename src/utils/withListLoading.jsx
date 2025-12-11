@@ -2,7 +2,7 @@ import React from "react"
 
 export const withListLoading = (Component, LoadingComponent = Comment) => {
     return ({ loadingCount = 3, data, loading, empty, ...props }) => {
-        return loading ? Array.from(Array(loadingCount)).map((_, i) => <LoadingComponent key={i} loading />)
+        return loading ? Array.from(Array(loadingCount)).map((_, i) => <LoadingComponent key={i} {...props} loading />)
             : data.length > 0 ? data.map(e => <React.Fragment key={e._id}><Component {...e} {...props} /></React.Fragment>)
                 :
                 (

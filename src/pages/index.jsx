@@ -1,8 +1,14 @@
 import React from 'react'
+import { Slider } from '@/components/Slider'
+import { Tab } from '@/components/Tab'
+import { ListProduct } from '@/components/ListProduct'
 
 export default function HomePage() {
     return (
         <>
+            <Helmet>
+                <title>Trang Chủ shopper</title>
+            </Helmet>
             <div>
                 {/* PROMO */}
                 <div className="py-3 bg-dark bg-pattern mb-4">
@@ -23,7 +29,7 @@ export default function HomePage() {
                 <section>
                     <div className="row no-gutters d-block d-lg-flex flickity flickity-lg-none" data-flickity="{&quot;watchCSS&quot;: true}">
                         {/* Item */}
-                        <div className="col-12 col-md-6 col-lg-4 d-flex flex-column bg-cover" style={{ backgroundImage: 'url(./img/covers/cover-1.jpg)' }}>
+                        <div className="col-12 col-md-6 col-lg-4 d-flex flex-column bg-cover" style={{ backgroundImage: 'url(/img/covers/cover-1.jpg)' }}>
                             <div className="card bg-dark-5 bg-hover text-white text-center" style={{ minHeight: 470 }}>
                                 <div className="card-body mt-auto mb-n11 py-8">
                                     {/* Heading */}
@@ -40,7 +46,7 @@ export default function HomePage() {
                             </div>
                         </div>
                         {/* Card */}
-                        <div className="col-12 col-md-6 col-lg-4 d-flex flex-column bg-cover" style={{ backgroundImage: 'url(./img/covers/cover-2.jpg)' }}>
+                        <div className="col-12 col-md-6 col-lg-4 d-flex flex-column bg-cover" style={{ backgroundImage: 'url(/img/covers/cover-2.jpg)' }}>
                             <div className="card bg-dark-5 bg-hover text-white text-center" style={{ minHeight: 470 }}>
                                 <div className="card-body mt-auto mb-n11 py-8">
                                     {/* Heading */}
@@ -57,7 +63,7 @@ export default function HomePage() {
                             </div>
                         </div>
                         {/* Card */}
-                        <div className="col-12 col-md-6 col-lg-4 d-flex flex-column bg-cover" style={{ backgroundImage: 'url(./img/covers/cover-3.jpg)' }}>
+                        <div className="col-12 col-md-6 col-lg-4 d-flex flex-column bg-cover" style={{ backgroundImage: 'url(/img/covers/cover-3.jpg)' }}>
                             <div className="card bg-dark-5 bg-hover text-white text-center" style={{ minHeight: 470 }}>
                                 <div className="card-body mt-auto mb-n11 py-8">
                                     {/* Heading */}
@@ -174,10 +180,10 @@ export default function HomePage() {
                         <div className="row">
                             <div className="col-12 col-md-5 col-lg-4 d-flex flex-column">
                                 {/* Card */}
-                                <div className="product-card card mb-7 text-white" style={{ minHeight: 400, backgroundImage: 'url(./img/products/product-1.jpg)' }}>
+                                <div className="product-card card mb-7 text-white" style={{ minHeight: 400, backgroundImage: 'url(/img/products/product-1.jpg)' }}>
                                     {/* Background */}
                                     <div className="card-bg">
-                                        <div className="card-bg-img bg-cover" style={{ backgroundImage: 'url(./img/products/product-1.jpg)' }} />
+                                        <div className="card-bg-img bg-cover" style={{ backgroundImage: 'url(/img/products/product-1.jpg)' }} />
                                     </div>
                                     {/* Body */}
                                     <div className="card-body my-auto text-center">
@@ -195,7 +201,7 @@ export default function HomePage() {
                                 <div className="product-card card mb-7 text-body" style={{ minHeight: 400 }}>
                                     {/* Background */}
                                     <div className="card-bg">
-                                        <div className="card-bg-img bg-cover" style={{ backgroundImage: 'url(./img/products/product-2.jpg)' }} />
+                                        <div className="card-bg-img bg-cover" style={{ backgroundImage: 'url(/img/products/product-2.jpg)' }} />
                                     </div>
                                     {/* Body */}
                                     <div className="card-body my-auto px-md-10 text-center text-md-left">
@@ -218,7 +224,7 @@ export default function HomePage() {
                                 <div className="product-card card mb-7 mb-md-0 text-body" style={{ minHeight: 400 }}>
                                     {/* Background */}
                                     <div className="card-bg">
-                                        <div className="card-bg-img bg-cover" style={{ backgroundImage: 'url(./img/products/product-3.jpg)' }} />
+                                        <div className="card-bg-img bg-cover" style={{ backgroundImage: 'url(/img/products/product-3.jpg)' }} />
                                     </div>
                                     {/* Body */}
                                     <div className="card-body my-auto px-md-10 text-center text-md-left">
@@ -236,7 +242,7 @@ export default function HomePage() {
                                 <div className="card text-white" style={{ minHeight: 400 }}>
                                     {/* Background */}
                                     <div className="card-bg">
-                                        <div className="card-bg-img bg-cover" style={{ backgroundImage: 'url(./img/products/product-4.jpg)' }} />
+                                        <div className="card-bg-img bg-cover" style={{ backgroundImage: 'url(/img/products/product-4.jpg)' }} />
                                     </div>
                                     {/* Body */}
                                     <div className="card-body my-auto text-center">
@@ -253,413 +259,37 @@ export default function HomePage() {
                     </div>
                 </section>
                 {/* TOP SELLERS */}
-                <section className="py-12">
-                    <div className="container">
-                        <div className="row justify-content-center">
-                            <div className="col-12 col-md-10 col-lg-8 col-xl-6">
-                                {/* Heading */}
-                                <h2 className="mb-4 text-center">Sản phẩm bán chạy</h2>
-                                {/* Nav */}
-                                <div className="nav justify-content-center mb-10">
-                                    <a className="nav-link active" href="#topSellersTab" data-toggle="tab">Đồ điện tử</a>
-                                    <a className="nav-link" href="#topSellersTab" data-toggle="tab">Đồ gia dụng</a>
-                                    <a className="nav-link" href="#topSellersTab" data-toggle="tab">Sản phẩm khuyến mãi</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="tab-content">
-                            <div className="tab-pane fade show active" id="topSellersTab">
-                                <div className="row">
-                                    <div className="col-6 col-md-4 col-lg-3">
-                                        {/* Card */}
-                                        <div className="product-card card mb-7">
-                                            {/* Badge */}
-                                            <div className="badge badge-white card-badge card-badge-left text-uppercase">
-                                                New
-                                            </div>
-                                            {/* Image */}
-                                            <div className="card-img">
-                                                {/* Image */}
-                                                <a className="card-img-hover" href="product.html">
-                                                    <img className="card-img-top card-img-back" src="./img/products/product-120.jpg" alt="..." />
-                                                    <img className="card-img-top card-img-front" src="./img/products/product-5.jpg" alt="..." />
-                                                </a>
-                                                {/* Actions */}
-                                                <div className="card-actions">
-                                                    <span className="card-action">
-                                                    </span>
-                                                    <span className="card-action">
-                                                        <button className="btn btn-xs btn-circle btn-white-primary" data-toggle="button">
-                                                            <i className="fe fe-shopping-cart" />
-                                                        </button>
-                                                    </span>
-                                                    <span className="card-action">
-                                                        <button className="btn btn-xs btn-circle btn-white-primary" data-toggle="button">
-                                                            <i className="fe fe-heart" />
-                                                        </button>
-                                                    </span>
-                                                </div>
-                                            </div>
-                                            {/* Body */}
-                                            <div className="card-body px-0">
-                                                {/* Category */}
-                                                <div className="card-product-category font-size-xs">
-                                                    <a className="text-muted" href="shop.html">Shoes</a>
-                                                </div>
-                                                {/* Title */}
-                                                <div className="card-product-title font-weight-bold">
-                                                    <a className="text-body card-product-name" href>
-                                                        Leather mid-heel Sandals
-                                                    </a>
-                                                </div>
-                                                {/* Price */}
-                                                <div className="font-weight-bold text-muted">
-                                                    $129.00
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="col-6 col-md-4 col-lg-3">
-                                        {/* Card */}
-                                        <div className="product-card card mb-7">
-                                            {/* Image */}
-                                            <div className="card-img">
-                                                {/* Image */}
-                                                <a className="card-img-hover" href="product.html">
-                                                    <img className="card-img-top card-img-back" src="./img/products/product-121.jpg" alt="..." />
-                                                    <img className="card-img-top card-img-front" src="./img/products/product-6.jpg" alt="..." />
-                                                </a>
-                                                {/* Actions */}
-                                                <div className="card-actions">
-                                                    <span className="card-action">
-                                                    </span>
-                                                    <span className="card-action">
-                                                        <button className="btn btn-xs btn-circle btn-white-primary" data-toggle="button">
-                                                            <i className="fe fe-shopping-cart" />
-                                                        </button>
-                                                    </span>
-                                                    <span className="card-action">
-                                                        <button className="btn btn-xs btn-circle btn-white-primary" data-toggle="button">
-                                                            <i className="fe fe-heart" />
-                                                        </button>
-                                                    </span>
-                                                </div>
-                                            </div>
-                                            {/* Body */}
-                                            <div className="card-body px-0">
-                                                {/* Category */}
-                                                <div className="card-product-category font-size-xs">
-                                                    <a className="text-muted" href="shop.html">Dresses</a>
-                                                </div>
-                                                {/* Title */}
-                                                <div className="card-product-title font-weight-bold">
-                                                    <a className="text-body card-product-name" href>
-                                                        Cotton floral print Dress
-                                                    </a>
-                                                </div>
-                                                {/* Price */}
-                                                <div className="font-weight-bold text-muted">
-                                                    $40.00
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="col-6 col-md-4 col-lg-3">
-                                        {/* Card */}
-                                        <div className="product-card card mb-7">
-                                            {/* Badge */}
-                                            <div className="badge badge-dark card-badge card-badge-left text-uppercase">
-                                                Sale
-                                            </div>
-                                            {/* Image */}
-                                            <div className="card-img">
-                                                {/* Image */}
-                                                <a className="card-img-hover" href="product.html">
-                                                    <img className="card-img-top card-img-back" src="./img/products/product-122.jpg" alt="..." />
-                                                    <img className="card-img-top card-img-front" src="./img/products/product-7.jpg" alt="..." />
-                                                </a>
-                                                {/* Actions */}
-                                                <div className="card-actions">
-                                                    <span className="card-action">
-                                                    </span>
-                                                    <span className="card-action">
-                                                        <button className="btn btn-xs btn-circle btn-white-primary" data-toggle="button">
-                                                            <i className="fe fe-shopping-cart" />
-                                                        </button>
-                                                    </span>
-                                                    <span className="card-action">
-                                                        <button className="btn btn-xs btn-circle btn-white-primary" data-toggle="button">
-                                                            <i className="fe fe-heart" />
-                                                        </button>
-                                                    </span>
-                                                </div>
-                                            </div>
-                                            {/* Body */}
-                                            <div className="card-body px-0">
-                                                {/* Category */}
-                                                <div className="card-product-category font-size-xs">
-                                                    <a className="text-muted" href="shop.html">Shoes</a>
-                                                </div>
-                                                {/* Title */}
-                                                <div className="card-product-title font-weight-bold">
-                                                    <a className="text-body card-product-name" href>
-                                                        Leather Sneakers
-                                                    </a>
-                                                </div>
-                                                {/* Price */}
-                                                <div className="font-weight-bold">
-                                                    <span className="font-size-xs text-gray-350 text-decoration-line-through ml-1">$85.00</span>
-                                                    <span className="text-primary">$85.00</span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="col-6 col-md-4 col-lg-3">
-                                        {/* Card */}
-                                        <div className="product-card card mb-7">
-                                            {/* Image */}
-                                            <div className="card-img">
-                                                {/* Image */}
-                                                <a href="#!">
-                                                    <img className="card-img-top card-img-front" src="./img/products/product-8.jpg" alt="..." />
-                                                </a>
-                                                {/* Actions */}
-                                                <div className="card-actions">
-                                                    <span className="card-action">
-                                                    </span>
-                                                    <span className="card-action">
-                                                        <button className="btn btn-xs btn-circle btn-white-primary" data-toggle="button">
-                                                            <i className="fe fe-shopping-cart" />
-                                                        </button>
-                                                    </span>
-                                                    <span className="card-action">
-                                                        <button className="btn btn-xs btn-circle btn-white-primary" data-toggle="button">
-                                                            <i className="fe fe-heart" />
-                                                        </button>
-                                                    </span>
-                                                </div>
-                                            </div>
-                                            {/* Body */}
-                                            <div className="card-body px-0">
-                                                {/* Category */}
-                                                <div className="card-product-category font-size-xs">
-                                                    <a className="text-muted" href="shop.html">Tops</a>
-                                                </div>
-                                                {/* Title */}
-                                                <div className="card-product-title font-weight-bold">
-                                                    <a className="text-body card-product-name" href>
-                                                        Cropped cotton Top
-                                                    </a>
-                                                </div>
-                                                {/* Price */}
-                                                <div className="font-weight-bold text-muted">
-                                                    $29.00
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="col-6 col-md-4 col-lg-3">
-                                        {/* Card */}
-                                        <div className="product-card card mb-7">
-                                            {/* Image */}
-                                            <div className="card-img">
-                                                {/* Image */}
-                                                <a href="#!">
-                                                    <img className="card-img-top card-img-front" src="./img/products/product-9.jpg" alt="..." />
-                                                </a>
-                                                {/* Actions */}
-                                                <div className="card-actions">
-                                                    <span className="card-action">
-                                                    </span>
-                                                    <span className="card-action">
-                                                        <button className="btn btn-xs btn-circle btn-white-primary" data-toggle="button">
-                                                            <i className="fe fe-shopping-cart" />
-                                                        </button>
-                                                    </span>
-                                                    <span className="card-action">
-                                                        <button className="btn btn-xs btn-circle btn-white-primary" data-toggle="button">
-                                                            <i className="fe fe-heart" />
-                                                        </button>
-                                                    </span>
-                                                </div>
-                                            </div>
-                                            {/* Body */}
-                                            <div className="card-body px-0">
-                                                {/* Category */}
-                                                <div className="card-product-category font-size-xs">
-                                                    <a className="text-muted" href="shop.html">Dresses</a>
-                                                </div>
-                                                {/* Title */}
-                                                <div className="card-product-title font-weight-bold">
-                                                    <a className="text-body card-product-name" href>
-                                                        Floral print midi Dress
-                                                    </a>
-                                                </div>
-                                                {/* Price */}
-                                                <div className="font-weight-bold text-muted">
-                                                    $50.00
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="col-6 col-md-4 col-lg-3">
-                                        {/* Card */}
-                                        <div className="product-card card mb-7">
-                                            {/* Badge */}
-                                            <div className="badge badge-dark card-badge card-badge-left text-uppercase">
-                                                Sale
-                                            </div>
-                                            {/* Image */}
-                                            <div className="card-img">
-                                                {/* Image */}
-                                                <a className="card-img-hover" href="product.html">
-                                                    <img className="card-img-top card-img-back" src="./img/products/product-123.jpg" alt="..." />
-                                                    <img className="card-img-top card-img-front" src="./img/products/product-10.jpg" alt="..." />
-                                                </a>
-                                                {/* Actions */}
-                                                <div className="card-actions">
-                                                    <span className="card-action">
-                                                    </span>
-                                                    <span className="card-action">
-                                                        <button className="btn btn-xs btn-circle btn-white-primary" data-toggle="button">
-                                                            <i className="fe fe-shopping-cart" />
-                                                        </button>
-                                                    </span>
-                                                    <span className="card-action">
-                                                        <button className="btn btn-xs btn-circle btn-white-primary" data-toggle="button">
-                                                            <i className="fe fe-heart" />
-                                                        </button>
-                                                    </span>
-                                                </div>
-                                            </div>
-                                            {/* Body */}
-                                            <div className="card-body px-0">
-                                                {/* Category */}
-                                                <div className="card-product-category font-size-xs">
-                                                    <a className="text-muted" href="shop.html">Bags</a>
-                                                </div>
-                                                {/* Title */}
-                                                <div className="card-product-title font-weight-bold">
-                                                    <a className="text-body card-product-name" href>
-                                                        Suede cross body Bag
-                                                    </a>
-                                                </div>
-                                                {/* Price */}
-                                                <div className="font-weight-bold">
-                                                    <span className="font-size-xs text-gray-350 text-decoration-line-through ml-1">$79.00</span>
-                                                    <span className="text-primary">$49.00</span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="col-6 col-md-4 col-lg-3">
-                                        {/* Card */}
-                                        <div className="product-card card mb-7">
-                                            {/* Image */}
-                                            <div className="card-img">
-                                                {/* Image */}
-                                                <a className="card-img-hover" href="product.html">
-                                                    <img className="card-img-top card-img-back" src="./img/products/product-124.jpg" alt="..." />
-                                                    <img className="card-img-top card-img-front" src="./img/products/product-11.jpg" alt="..." />
-                                                </a>
-                                                {/* Actions */}
-                                                <div className="card-actions">
-                                                    <span className="card-action">
-                                                    </span>
-                                                    <span className="card-action">
-                                                        <button className="btn btn-xs btn-circle btn-white-primary" data-toggle="button">
-                                                            <i className="fe fe-shopping-cart" />
-                                                        </button>
-                                                    </span>
-                                                    <span className="card-action">
-                                                        <button className="btn btn-xs btn-circle btn-white-primary" data-toggle="button">
-                                                            <i className="fe fe-heart" />
-                                                        </button>
-                                                    </span>
-                                                </div>
-                                            </div>
-                                            {/* Body */}
-                                            <div className="card-body px-0">
-                                                {/* Category */}
-                                                <div className="card-product-category font-size-xs">
-                                                    <a className="text-muted" href="shop.html">Skirts</a>
-                                                </div>
-                                                {/* Title */}
-                                                <div className="card-product-title font-weight-bold">
-                                                    <a className="text-body card-product-name" href>
-                                                        Printed A-line Skirt
-                                                    </a>
-                                                </div>
-                                                {/* Price */}
-                                                <div className="font-weight-bold text-muted">
-                                                    $79.00
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="col-6 col-md-4 col-lg-3">
-                                        {/* Card */}
-                                        <div className="product-card card mb-7">
-                                            {/* Badge */}
-                                            <div className="badge badge-white card-badge card-badge text-uppercase">
-                                                New
-                                            </div>
-                                            {/* Image */}
-                                            <div className="card-img">
-                                                {/* Image */}
-                                                <a href="#!">
-                                                    <img className="card-img-top card-img-front" src="./img/products/product-12.jpg" alt="..." />
-                                                </a>
-                                                {/* Actions */}
-                                                <div className="card-actions">
-                                                    <span className="card-action">
-                                                    </span>
-                                                    <span className="card-action">
-                                                        <button className="btn btn-xs btn-circle btn-white-primary" data-toggle="button">
-                                                            <i className="fe fe-shopping-cart" />
-                                                        </button>
-                                                    </span>
-                                                    <span className="card-action">
-                                                        <button className="btn btn-xs btn-circle btn-white-primary" data-toggle="button">
-                                                            <i className="fe fe-heart" />
-                                                        </button>
-                                                    </span>
-                                                </div>
-                                            </div>
-                                            {/* Body */}
-                                            <div className="card-body px-0">
-                                                {/* Category */}
-                                                <div className="card-product-category font-size-xs">
-                                                    <a className="text-muted" href="shop.html">Shoes</a>
-                                                </div>
-                                                {/* Title */}
-                                                <div className="card-product-title font-weight-bold">
-                                                    <a className="text-body card-product-name" href>
-                                                        Heel strappy Sandals
-                                                    </a>
-                                                </div>
-                                                {/* Price */}
-                                                <div className="font-weight-bold text-muted">
-                                                    $90.00
-                                                </div>
-                                            </div>
-                                        </div>
+                <Tab removeOnDeActive defaultActive="do-dien-tu">
+                    <section className="py-12">
+                        <div className="container">
+                            <div className="row justify-content-center">
+                                <div className="col-12 col-md-10 col-lg-8 col-xl-6">
+                                    {/* Heading */}
+                                    <h2 className="mb-4 text-center">Sản phẩm bán chạy</h2>
+                                    {/* Nav */}
+                                    <div className="nav justify-content-center mb-10">
+                                        <Tab.Title value="do-dien-tu">Đồ điện tử</Tab.Title>
+                                        <Tab.Title value="do-gia-dung">Đồ gia dụng</Tab.Title>
+                                        <Tab.Title value="san-pham-khuyen-mai">Sản phẩm khuyến mãi</Tab.Title>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <div className="row">
-                            <div className="col-12">
-                                {/* Link  */}
-                                <div className="mt-7 text-center">
-                                    <a className="link-underline" href="#!">Discover more</a>
-                                </div>
+                            <div className="tab-content">
+                                <Tab.Content value="do-dien-tu">
+                                    <ListProduct link="/dien-tu-dien-lanh/4221" query="?categories=4221&limit=8" />
+                                </Tab.Content>
+                                <Tab.Content value="do-gia-dung">
+                                    <ListProduct link="/dien-gia-dung/1882" query="?categories=1882&limit=8" />
+                                </Tab.Content>
+                                <Tab.Content value="san-pham-khuyen-mai">
+                                    <ListProduct link="/san-pham?page=1&sort=discount_rate.desc" query="?sort=discount_rate.desc&limit=8" />
+                                </Tab.Content>
                             </div>
                         </div>
-                    </div>
-                </section>
+                    </section>
+                </Tab>
                 {/* COUNTDOWN */}
-                <section className="py-13 bg-cover" style={{ backgroundImage: 'url(./img/covers/cover-4.jpg)' }}>
+                <section className="py-13 bg-cover" style={{ backgroundImage: 'url(/img/covers/cover-4.jpg)' }}>
                     <div className="container">
                         <div className="row justify-content-end">
                             <div className="col-12 col-md-8 col-lg-6">
@@ -719,8 +349,11 @@ export default function HomePage() {
                         <div className="row">
                             <div className="col-12">
                                 {/* Slider */}
-                                <div data-flickity="{&quot;pageDots&quot;: true}">
-                                    <div className="col-12 col-sm-8 col-md-6 col-lg-4">
+                                <Slider
+                                    slidesPerView={3}
+                                    spaceBetween={30}
+                                >
+                                    <div>
                                         {/* Card */}
                                         <div className="card-lg card border">
                                             <div className="card-body">
@@ -728,7 +361,7 @@ export default function HomePage() {
                                                 <div className="row align-items-center mb-6">
                                                     <div className="col-4">
                                                         {/* Image */}
-                                                        <img src="./img/products/product-13.jpg" alt="..." className="img-fluid" />
+                                                        <img src="/img/products/product-13.jpg" alt="..." className="img-fluid" />
                                                     </div>
                                                     <div className="col-8 ml-n2">
                                                         {/* Preheading */}
@@ -772,7 +405,7 @@ export default function HomePage() {
                                             </div>
                                         </div>
                                     </div>
-                                    <div className="col-12 col-sm-8 col-md-6 col-lg-4">
+                                    <div>
                                         {/* Card */}
                                         <div className="card-lg card border">
                                             <div className="card-body">
@@ -780,7 +413,7 @@ export default function HomePage() {
                                                 <div className="row align-items-center mb-6">
                                                     <div className="col-4">
                                                         {/* Image */}
-                                                        <img src="./img/products/product-14.jpg" alt="..." className="img-fluid" />
+                                                        <img src="/img/products/product-14.jpg" alt="..." className="img-fluid" />
                                                     </div>
                                                     <div className="col-8 ml-n2">
                                                         {/* Preheading */}
@@ -825,7 +458,7 @@ export default function HomePage() {
                                             </div>
                                         </div>
                                     </div>
-                                    <div className="col-12 col-sm-8 col-md-6 col-lg-4">
+                                    <div>
                                         {/* Card */}
                                         <div className="card-lg card border">
                                             <div className="card-body">
@@ -833,7 +466,7 @@ export default function HomePage() {
                                                 <div className="row align-items-center mb-6">
                                                     <div className="col-4">
                                                         {/* Image */}
-                                                        <img src="./img/products/product-15.jpg" alt="..." className="img-fluid" />
+                                                        <img src="/img/products/product-15.jpg" alt="..." className="img-fluid" />
                                                     </div>
                                                     <div className="col-8 ml-n2">
                                                         {/* Preheading */}
@@ -877,7 +510,7 @@ export default function HomePage() {
                                             </div>
                                         </div>
                                     </div>
-                                    <div className="col-12 col-sm-8 col-md-6 col-lg-4">
+                                    <div>
                                         {/* Card */}
                                         <div className="card-lg card border">
                                             <div className="card-body">
@@ -885,7 +518,7 @@ export default function HomePage() {
                                                 <div className="row align-items-center mb-6">
                                                     <div className="col-4">
                                                         {/* Image */}
-                                                        <img src="./img/products/product-10.jpg" alt="..." className="img-fluid" />
+                                                        <img src="/img/products/product-10.jpg" alt="..." className="img-fluid" />
                                                     </div>
                                                     <div className="col-8 ml-n2">
                                                         {/* Preheading */}
@@ -929,7 +562,7 @@ export default function HomePage() {
                                             </div>
                                         </div>
                                     </div>
-                                </div>
+                                </Slider>
                             </div>
                         </div>
                     </div>
@@ -952,7 +585,7 @@ export default function HomePage() {
                                 {/* Card */}
                                 <div className="card mb-2">
                                     {/* Image */}
-                                    <img src="./img/products/product-16.jpg" alt="..." className="card-img" />
+                                    <img src="/img/products/product-16.jpg" alt="..." className="card-img" />
                                     {/* Overlay */}
                                     <a className="card-img-overlay card-img-overlay-hover align-items-center bg-dark-40" href="blog-post.html">
                                         <p className="my-0 font-size-xxs text-center text-white">
@@ -965,7 +598,7 @@ export default function HomePage() {
                                 {/* Card */}
                                 <div className="card mb-2">
                                     {/* Image */}
-                                    <img src="./img/products/product-17.jpg" alt="..." className="card-img" />
+                                    <img src="/img/products/product-17.jpg" alt="..." className="card-img" />
                                     {/* Overlay */}
                                     <a className="card-img-overlay card-img-overlay-hover align-items-center bg-dark-40" href="blog-post.html">
                                         <p className="my-0 font-size-xxs text-center text-white">
@@ -978,7 +611,7 @@ export default function HomePage() {
                                 {/* Card */}
                                 <div className="card mb-2">
                                     {/* Image */}
-                                    <img src="./img/products/product-18.jpg" alt="..." className="card-img" />
+                                    <img src="/img/products/product-18.jpg" alt="..." className="card-img" />
                                     {/* Overlay */}
                                     <a className="card-img-overlay card-img-overlay-hover align-items-center bg-dark-40" href="blog-post.html">
                                         <p className="my-0 font-size-xxs text-center text-white">
@@ -991,7 +624,7 @@ export default function HomePage() {
                                 {/* Card */}
                                 <div className="card mb-2">
                                     {/* Image */}
-                                    <img src="./img/products/product-19.jpg" alt="..." className="card-img" />
+                                    <img src="/img/products/product-19.jpg" alt="..." className="card-img" />
                                     {/* Overlay */}
                                     <a className="card-img-overlay card-img-overlay-hover align-items-center bg-dark-40" href="blog-post.html">
                                         <p className="my-0 font-size-xxs text-center text-white">
@@ -1004,7 +637,7 @@ export default function HomePage() {
                                 {/* Card */}
                                 <div className="card">
                                     {/* Image */}
-                                    <img src="./img/products/product-20.jpg" alt="..." className="card-img" />
+                                    <img src="/img/products/product-20.jpg" alt="..." className="card-img" />
                                     {/* Overlay */}
                                     <a className="card-img-overlay card-img-overlay-hover align-items-center bg-dark-40" href="blog-post.html">
                                         <p className="my-0 font-size-xxs text-center text-white">
@@ -1017,7 +650,7 @@ export default function HomePage() {
                                 {/* Card */}
                                 <div className="card">
                                     {/* Image */}
-                                    <img src="./img/products/product-21.jpg" alt="..." className="card-img" />
+                                    <img src="/img/products/product-21.jpg" alt="..." className="card-img" />
                                     {/* Overlay */}
                                     <a className="card-img-overlay card-img-overlay-hover align-items-center bg-dark-40" href="blog-post.html">
                                         <p className="my-0 font-size-xxs text-center text-white">
@@ -1030,31 +663,31 @@ export default function HomePage() {
                         <div className="row">
                             <div className="col-4 col-sm-3 col-md text-center">
                                 {/* Brand */}
-                                <img src="./img/brands/gray-350/mango.svg" alt="..." className="img-fluid mb-7 mb-md-0" />
+                                <img src="/img/brands/gray-350/mango.svg" alt="..." className="img-fluid mb-7 mb-md-0" />
                             </div>
                             <div className="col-4 col-sm-3 col-md text-center">
                                 {/* Brand */}
-                                <img src="./img/brands/gray-350/zara.svg" alt="..." className="img-fluid mb-7 mb-md-0" />
+                                <img src="/img/brands/gray-350/zara.svg" alt="..." className="img-fluid mb-7 mb-md-0" />
                             </div>
                             <div className="col-4 col-sm-3 col-md text-center">
                                 {/* Brand */}
-                                <img src="./img/brands/gray-350/reebok.svg" alt="..." className="img-fluid mb-7 mb-md-0" />
+                                <img src="/img/brands/gray-350/reebok.svg" alt="..." className="img-fluid mb-7 mb-md-0" />
                             </div>
                             <div className="col-4 col-sm-3 col-md text-center">
                                 {/* Brand */}
-                                <img src="./img/brands/gray-350/asos.svg" alt="..." className="img-fluid mb-7 mb-md-0" />
+                                <img src="/img/brands/gray-350/asos.svg" alt="..." className="img-fluid mb-7 mb-md-0" />
                             </div>
                             <div className="col-4 col-sm-3 col-md text-center">
                                 {/* Brand */}
-                                <img src="./img/brands/gray-350/stradivarius.svg" alt="..." className="img-fluid mb-6 mb-sm-0" />
+                                <img src="/img/brands/gray-350/stradivarius.svg" alt="..." className="img-fluid mb-6 mb-sm-0" />
                             </div>
                             <div className="col-4 col-sm-3 col-md text-center">
                                 {/* Brand */}
-                                <img src="./img/brands/gray-350/adidas.svg" alt="..." className="img-fluid mb-6 mb-sm-0" />
+                                <img src="/img/brands/gray-350/adidas.svg" alt="..." className="img-fluid mb-6 mb-sm-0" />
                             </div>
                             <div className="col-4 col-sm-3 col-md text-center">
                                 {/* Brand */}
-                                <img src="./img/brands/gray-350/bershka.svg" alt="..." className="img-fluid" />
+                                <img src="/img/brands/gray-350/bershka.svg" alt="..." className="img-fluid" />
                             </div>
                         </div>
                     </div>

@@ -4,6 +4,7 @@ import { useQuery } from '@/hooks/useQuery'
 import { useSearch } from '@/hooks/useSearch'
 import { productService } from '@/services/product'
 import queryString from 'query-string'
+import { Helmet } from 'react-helmet'
 
 export const WishlistPage = () => {
     const [search] = useSearch({
@@ -19,6 +20,9 @@ export const WishlistPage = () => {
     })
     return (
         <>
+            <Helmet>
+                <title>Sản phẩm yêu thích</title>
+            </Helmet>
             <div>
                 {/* Products */}
                 <div className="row">

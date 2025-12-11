@@ -13,6 +13,7 @@ import { cartActions } from '@/stores/cart'
 import { currency, handleError, regexp, required, storeAddressSelect } from '@/utils'
 import { Spin } from 'antd'
 import React, { useEffect, useRef, useState } from 'react'
+import { Helmet } from 'react-helmet'
 import { useDispatch } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 
@@ -104,6 +105,9 @@ export const Checkout = () => {
     }
     return (
         <>
+            <Helmet>
+                <title>Đặt hàng</title>
+            </Helmet>
             <AddressDrawer onSelect={(address) => {
                 storeAddressSelect.set(address)
                 setAddress(address)

@@ -23,6 +23,9 @@ export const {
     setUser: (state, action) => {
       state.user = action.payload;
     },
+    toggleLoading: (state, action) => {
+      state.loginLoading = action.payload;
+    },
   },
 });
 

@@ -7,6 +7,7 @@ import { currency } from '@/utils'
 import { message } from 'antd'
 import moment from 'moment'
 import React from 'react'
+import { Helmet } from 'react-helmet'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 
 const SHIPPING = {
@@ -135,6 +136,9 @@ export const OrderDetailPage = () => {
     checkReturn = status === 'finished' && moment(finishedDate) > moment().add(-7, 'd')
     return (
         <>
+            <Helmet>
+                <title>Chi tiết đơn hàng</title>
+            </Helmet>
             {/* Order */}
             <div className="card card-lg mb-5 border">
                 <div className="card-body pb-0">

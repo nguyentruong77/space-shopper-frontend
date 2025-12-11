@@ -3,3 +3,9 @@
 .ant-modal-content {
   padding: 0 !important;
 }
+.swiper-pagination-bullet {
+  background: #d8d8d8 !important;
+}
+.swiper-pagination-bullet-active {
+  background: #ff6f61 !important;
+}

@@ -3,6 +3,7 @@ import { Paginate } from '@/components/Paginate'
 import { ListProductCard } from '@/components/ProductCard'
 import { Radio } from '@/components/Radio'
 import { Skeleton } from '@/components/Skeleton'
+import { Slider } from '@/components/Slider'
 import { PATH } from '@/config'
 import { useCategories, useCategory } from '@/hooks/useCategories'
 import { useDidUpdateEffect } from '@/hooks/useDisUpdateEffect'
@@ -12,6 +13,7 @@ import { productService } from '@/services/product'
 import { cn, slugify } from '@/utils'
 import queryString from 'query-string'
 import { useState } from 'react'
+import { Helmet } from 'react-helmet'
 import { generatePath, Link, useParams } from 'react-router-dom'
 
 export const ProductPage = () => {
@@ -52,6 +54,9 @@ export const ProductPage = () => {
     const category = useCategory(parseInt(id))
     return (
         <section className="py-11">
+            <Helmet>
+                <title>Sản phẩm</title>
+            </Helmet>
             <div className="container">
                 <div className="row">
                     <div className="col-12 col-md-4 col-lg-3">
@@ -173,9 +178,9 @@ export const ProductPage = () => {
                     </div>
                     <div className="col-12 col-md-8 col-lg-9">
                         {/* Slider */}
-                        {/* <div className="flickity-page-dots-inner mb-9" data-flickity="{&quot;pageDots&quot;: true}">
+                        <Slider>
                             <div className="w-100">
-                                <div className="card bg-h-100 bg-left" style={{ backgroundImage: 'url(./img/covers/cover-24.jpg)' }}>
+                                <div className="card bg-h-100 bg-left" style={{ backgroundImage: 'url(/img/covers/cover-24.jpg)' }}>
                                     <div className="row" style={{ minHeight: 400 }}>
                                         <div className="col-12 col-md-10 col-lg-8 col-xl-6 align-self-center">
                                             <div className="card-body px-md-10 py-11">
@@ -187,12 +192,12 @@ export const ProductPage = () => {
                                                 </a>
                                             </div>
                                         </div>
-                                        <div className="col-12 col-md-2 col-lg-4 col-xl-6 d-none d-md-block bg-cover" style={{ backgroundImage: 'url(./img/covers/cover-16.jpg)' }} />
+                                        <div className="col-12 col-md-2 col-lg-4 col-xl-6 d-none d-md-block bg-cover" style={{ backgroundImage: 'url(/img/covers/cover-16.jpg)' }} />
                                     </div>
                                 </div>
                             </div>
                             <div className="w-100">
-                                <div className="card bg-cover" style={{ backgroundImage: 'url(./img/covers/cover-29.jpg)' }}>
+                                <div className="card bg-cover" style={{ backgroundImage: 'url(/img/covers/cover-29.jpg)' }}>
                                     <div className="row align-items-center" style={{ minHeight: 400 }}>
                                         <div className="col-12 col-md-10 col-lg-8 col-xl-6">
                                             <div className="card-body px-md-10 py-11">
@@ -210,7 +215,7 @@ export const ProductPage = () => {
                                 </div>
                             </div>
                             <div className="w-100">
-                                <div className="card bg-cover" style={{ backgroundImage: 'url(./img/covers/cover-30.jpg)' }}>
+                                <div className="card bg-cover" style={{ backgroundImage: 'url(/img/covers/cover-30.jpg)' }}>
                                     <div className="row align-items-center" style={{ minHeight: 400 }}>
                                         <div className="col-12">
                                             <div className="card-body px-md-10 py-11 text-center text-white">
@@ -222,19 +227,10 @@ export const ProductPage = () => {
                                     </div>
                                 </div>
                             </div>
-                        </div> */}
+                        </Slider>
                         <div className="row align-items-center mb-7">
                             <div className="col-12 col-md">
                                 <h3 className="mb-1">{category ? category.title : 'Tất cả sản phẩm'}</h3>
-                                {/* Breadcrumb */}
-                                {/* <ol className="breadcrumb mb-md-0 font-size-xs text-gray-400">
-                                    <li className="breadcrumb-item">
-                                        <a className="text-gray-400" href="index.html">Home</a>
-                                    </li>
-                                    <li className="breadcrumb-item active">
-                                        Women's Clothing
-                                    </li>
-                                </ol> */}
                                 <Breadcrumb>
                                     <Breadcrumb.Item to={PATH.Home}>Home</Breadcrumb.Item>
                                     <Breadcrumb.Item to={PATH.Home}>

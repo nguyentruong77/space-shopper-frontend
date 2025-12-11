@@ -2,6 +2,7 @@ import { ListAddressCard } from '@/components/AddressCard'
 import { PATH } from '@/config'
 import { useQuery } from '@/hooks/useQuery'
 import { userService } from '@/services/user'
+import { Helmet } from 'react-helmet'
 import { Link } from 'react-router-dom'
 
 export const AddressPage = () => {
@@ -13,6 +14,9 @@ export const AddressPage = () => {
     })
     return (
         <div className="row">
+            <Helmet>
+                <title>Sổ địa chỉ</title>
+            </Helmet>
             <ListAddressCard
                 data={data?.data}
                 loading={!data?.data && loading}

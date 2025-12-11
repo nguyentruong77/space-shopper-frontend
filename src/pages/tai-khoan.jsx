@@ -11,6 +11,7 @@ import { loginAction, loginByCodeAction } from '@/stores/auth'
 import { confirm, copyToClipboard, handleError, regexp, required } from '@/utils'
 import { message } from 'antd'
 import { useEffect, useState } from 'react'
+import { Helmet } from 'react-helmet'
 import { useDispatch } from 'react-redux'
 
 export const AccountPage = () => {
@@ -90,6 +91,9 @@ export const AccountPage = () => {
     }
     return (
         <>
+            <Helmet>
+                <title>Tài khoản</title>
+            </Helmet>
             <ResetPasswordModal open={openResetPassword} onClose={() => setOpenResetPassword(false)} />
             <section className="py-12">
                 <div className="container">

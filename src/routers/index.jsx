@@ -13,6 +13,7 @@ import { ViewCart } from "@/pages/gio-hang";
 import { Checkout } from "@/pages/checkout";
 import { OrderComplete } from "@/pages/dat-hang-thanh-cong";
 import { ResetPasswordPage } from "@/pages/reset-password";
+import { ContactPage } from "@/pages/contact";
 
 const routes = [
     {
@@ -45,6 +46,10 @@ const routes = [
             {
                 element: <OrderComplete />,
                 path: PATH.OrderComplete,
+            },
+            {
+                element: <ContactPage />,
+                path: PATH.Contact,
             },
             {
                 element: <PrivateRoute redirect={PATH.Account} />,

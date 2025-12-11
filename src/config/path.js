@@ -22,4 +22,5 @@ export const PATH = {
   },
   Account: "/tai-khoan",
   ResetPassword: "/reset-password",
+  Contact: "/lien-he",
 };

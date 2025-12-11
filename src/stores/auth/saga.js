@@ -19,6 +19,7 @@ export const loginSuccessAction = createAction("auth/loginSuccess");
 
 export function* fetchLogin(action) {
   try {
+    yield put(authActions.toggleLoading(true));
     const res = yield call(authService.login, action.payload);
     setToken(res.data);
     const user = yield call(userService.getUser);
@@ -28,6 +29,8 @@ export function* fetchLogin(action) {
     return user.data;
   } catch (error) {
     throw error.response.data;
+  } finally {
+    yield put(authActions.toggleLoading(false));
   }
 }
 export function* loginByCode(action) {

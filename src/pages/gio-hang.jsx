@@ -9,6 +9,7 @@ import { addPromotionAction, removePromotionAction } from '@/stores/cart'
 import { cn, currency, handleError, required } from '@/utils'
 import { message, Spin } from 'antd'
 import React, { useEffect } from 'react'
+import { Helmet } from 'react-helmet'
 import { useDispatch } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 
@@ -51,6 +52,9 @@ export const ViewCart = () => {
     }
     return (
         <>
+            <Helmet>
+                <title>Giỏ hàng</title>
+            </Helmet>
             <section className="pt-7 pb-12">
                 {
                     cart?.listItems.length > 0 ? (

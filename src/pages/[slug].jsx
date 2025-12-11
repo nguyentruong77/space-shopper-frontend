@@ -19,6 +19,7 @@ import { updateCardItemAction } from '@/stores/cart';
 import { currency, handleError, required } from '@/utils';
 import { Image, message } from 'antd';
 import { useState } from 'react';
+import { Helmet } from 'react-helmet';
 import { useDispatch } from 'react-redux';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 
@@ -96,6 +97,9 @@ export const ProductDetailPage = () => {
     }
     return (
         <>
+            <Helmet>
+                <title>Chi tiết sản phẩm</title>
+            </Helmet>
             {/* BREADCRUMB */}
             <nav className="py-5">
                 <div className="container">

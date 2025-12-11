@@ -7,6 +7,7 @@ import { userService } from '@/services/user'
 import { handleError, object, regexp, required } from '@/utils'
 import { message, Spin } from 'antd'
 import React from 'react'
+import { Helmet } from 'react-helmet'
 import { useNavigate, useParams } from 'react-router-dom'
 
 const rules = {
@@ -76,6 +77,9 @@ export const ActionAddressPage = () => {
   const isEdit = id
   return (
     <>
+      <Helmet>
+        <title>{isEdit ? "Chỉnh sửa địa chỉ" : "Thêm địa chỉ"}</title>
+      </Helmet>
       <Spin spinning={getAddressLoading}>
         <div className="row">
           <div className="col-12">

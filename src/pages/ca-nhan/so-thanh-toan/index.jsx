@@ -3,6 +3,7 @@ import { PATH } from '@/config'
 import { useQuery } from '@/hooks/useQuery'
 import { userService } from '@/services/user'
 import React from 'react'
+import { Helmet } from 'react-helmet'
 import { Link } from 'react-router-dom'
 
 export const PaymentPage = () => {
@@ -14,6 +15,9 @@ export const PaymentPage = () => {
     })
     return (
         <div className="row">
+            <Helmet>
+                <title>Sổ thanh toán</title>
+            </Helmet>
             <ListPaymentCard
                 data={data?.data}
                 loading={!data?.data && loading}

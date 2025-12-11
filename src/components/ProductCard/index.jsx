@@ -5,7 +5,7 @@ import { useCart } from '@/hooks/useCart'
 import { useCategory } from '@/hooks/useCategories'
 import { productService } from '@/services/product'
 import { updateCardItemAction } from '@/stores/cart'
-import { currency } from '@/utils'
+import { cn, currency } from '@/utils'
 import { withListLoading } from '@/utils/withListLoading'
 import { useDispatch } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
@@ -13,7 +13,7 @@ import { PopConfirm } from '../PopConfirm'
 import { Rating } from '../Rating'
 import { Skeleton } from '../Skeleton'
 
-const ProductCard = ({ onRemoveWishlistSuccess, showRemove, showWishlist, id, slug, images, categories, name, price, real_price, discount_rate, review_count, rating_average }) => {
+const ProductCard = ({ className = "", onRemoveWishlistSuccess, showRemove, showWishlist, id, slug, images, categories, name, price, real_price, discount_rate, review_count, rating_average }) => {
     const img1 = images?.[0]?.thumbnail_url
     const img2 = images?.[1] ? images?.[1]?.thumbnail_url : img1
     const category = useCategory(categories)
@@ -50,7 +50,7 @@ const ProductCard = ({ onRemoveWishlistSuccess, showRemove, showWishlist, id, sl
         }
     }
     return (
-        <div className="col-6 col-md-4">
+        <div className={cn("col-6 col-md-4", className)}>
             {/* Card */}
             <div className="product-card card mb-7">
                 {/* Badge */}
@@ -140,9 +140,9 @@ const ProductCard = ({ onRemoveWishlistSuccess, showRemove, showWishlist, id, sl
     )
 }
 
-const ProductCardLoading = () => {
+const ProductCardLoading = ({ className }) => {
     return (
-        <div className="col-6 col-md-4">
+        <div className={cn("col-6 col-md-4", className)}>
             {/* Card */}
             <div className="product-card card mb-7">
                 {/* Image */}

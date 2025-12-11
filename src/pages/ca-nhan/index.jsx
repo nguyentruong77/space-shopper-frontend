@@ -13,6 +13,7 @@ import { confirm, handleError, minMax, object, regexp, required, validate } from
 import { DatePicker, message } from 'antd'
 import dayjs from 'dayjs'
 import { useRef } from 'react'
+import { Helmet } from 'react-helmet'
 import { useDispatch } from 'react-redux'
 
 const rules = {
@@ -104,6 +105,9 @@ export const ProfilePage = () => {
     }
     return (
         <div>
+            <Helmet>
+                <title>Cá nhân</title>
+            </Helmet>
             <div className="row">
                 <div className="col-12">
                     <UploadFile onChange={(file) => fileRef.current = file}>

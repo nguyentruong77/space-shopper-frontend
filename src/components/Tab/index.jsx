@@ -4,7 +4,7 @@ import { useLocation, useSearchParams } from 'react-router-dom'
 
 const Context = createContext({})
 
-export const Tab = ({ name = 'Tab', removeOnDeActive, children, defaultActive, onChange }) => {
+export const Tab = ({ name = 'Tab', removeOnDeActive, children, defaultActive, onChange, onSearchChange }) => {
     const [search] = useSearchParams()
     const [active, _setActive] = useState(search.get(name) || defaultActive)
     const setActive = (value) => {
@@ -12,22 +12,23 @@ export const Tab = ({ name = 'Tab', removeOnDeActive, children, defaultActive, o
         onChange?.(value)
     }
     return (
-        <Context.Provider value={{ removeOnDeActive, active, setActive, name }}>{children}</Context.Provider>
+        <Context.Provider value={{ removeOnDeActive, active: search.get(name) || defaultActive, setActive, name, onSearchChange }}>{children}</Context.Provider>
     )
 }
 
 Tab.Title = ({ children, value }) => {
     const { pathname } = useLocation()
     const [search, setSearch] = useSearchParams()
-    const { active, setActive, name } = useContext(Context)
+    const { active, setActive, name, onSearchChange } = useContext(Context)
     const onClick = (ev) => {
         ev.preventDefault();
         setActive(value);
         setSearch((search) => {
             const _search = new URLSearchParams(search)
             _search.set(name, value)
+            onSearchChange(_search)
             return _search
-        })
+        }, { replace: true })
     }
     return <a onClick={onClick} className={cn("nav-link", { active: value === active })} href='#'>{children}</a>
 }

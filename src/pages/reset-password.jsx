@@ -10,6 +10,7 @@ import { getCartAction } from '@/stores/cart'
 import { confirm, handleError, required, setToken } from '@/utils'
 import { message } from 'antd'
 import { useEffect } from 'react'
+import { Helmet } from 'react-helmet'
 import { useDispatch } from 'react-redux'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 
@@ -52,6 +53,9 @@ export const ResetPasswordPage = () => {
     }
     return (
         <section className="py-12" >
+            <Helmet>
+                <title>Reset password</title>
+            </Helmet>
             <div className="container">
                 <div className="row">
                     <div className="col-12 col-md-6 offset-md-3">
