@@ -1,10 +1,9 @@
-import React, { useState } from 'react'
-import { ShortContentStyle } from './style'
-import { cn } from '@/utils'
+import { useState } from 'react'
 import { Button } from '../Button'
+import { ShortContentStyle } from './style'
 
 export const ShortContent = ({ children, className, ...props }) => {
-    const [isShorted, setIsShorted] = useState()
+    const [isShorted, setIsShorted] = useState(true)
     return (
         <ShortContentStyle className={className}>
             <div {...props} style={{ height: isShorted ? 300 : 'auto' }} className='content'>

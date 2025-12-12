@@ -117,7 +117,7 @@ export const ProfilePage = () => {
                                     <div className="wrap" onClick={trigger}>
                                         <img src={PreviewSrc || user.avatar || avatarDefault} />
                                         <i className="icon">
-                                            <img src="./img/icons/icon-camera.svg" />
+                                            <img src="/img/icons/icon-camera.svg" />
                                         </i>
                                     </div>
                                 </div>

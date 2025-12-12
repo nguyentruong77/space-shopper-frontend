@@ -136,7 +136,7 @@ export const ViewCart = () => {
                         </div>
                     ) : (
                         <div className="flex flex-col gap-4 items-center">
-                            <img width={300} src="./img/empty-cart.png" />
+                            <img width={300} src="/img/empty-cart.png" />
                             <p className="mb-0">Không có sản phẩm nào trong giỏ hàng của bạn.</p>
                             <Link to={PATH.Product} className="btn btn-dark min-w-[300px] text-center">Tiếp tục mua sắm</Link>
                         </div>

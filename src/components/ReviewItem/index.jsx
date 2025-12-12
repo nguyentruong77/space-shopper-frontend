@@ -48,7 +48,7 @@ export const ReviewItem = ({ content, star, user, createAt }) => {
                     <div className="col-12 col-md-auto">
                         {/* Avatar */}
                         <div className="avatar avatar-xxl mb-6 mb-md-0">
-                            <div className='w-[100px] h-[100px] overflow-hidden rounded-full'>
+                            <div className='w-[100px] h-[100px] overflow-hidden !rounded-full'>
                                 <img className='w-full h-full object-cover' src={user?.avatar} />
                             </div>
                         </div>

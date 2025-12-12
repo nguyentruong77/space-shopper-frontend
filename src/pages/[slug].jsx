@@ -174,7 +174,7 @@ export const ProductDetailPage = () => {
                                         </div>
                                         <div className="col-auto flex items-center">
                                             {/* Rating */}
-                                            <Rating value={detail.data.review_count} />
+                                            <Rating value={detail.data.rating_average} />
                                             <a className="font-size-sm text-reset ml-2" href="#reviews">
                                                 Reviews ({product.review_count})
                                             </a>
@@ -288,7 +288,7 @@ export const ProductDetailPage = () => {
                                                         </ul>
                                                         {/* Size */}
                                                         <p className="mb-0">
-                                                            <img src="./img/icons/icon-ruler.svg" alt="..." className="img-fluid" />
+                                                            <img src="/img/icons/icon-ruler.svg" alt="..." className="img-fluid" />
                                                             <a className="text-reset text-decoration-underline ml-3" data-toggle="modal" href="#modalSizeChart">Size chart</a>
                                                         </p>
                                                     </div>
@@ -414,35 +414,7 @@ export const ProductDetailPage = () => {
                             }
                             {/* Header */}
                             <div className="row align-items-center">
-                                {/* <div className="col-12 col-md-auto">
-                                    <div className="dropdown mb-4 mb-md-0">
-                                        <a className="dropdown-toggle text-reset" data-toggle="dropdown" href="#">
-                                            <strong>Sort by: Newest</strong>
-                                        </a>
-                                        <div className="dropdown-menu mt-3">
-                                            <a className="dropdown-item" href="#!">Newest</a>
-                                            <a className="dropdown-item" href="#!">Oldest</a>
-                                        </div>
-                                    </div>
-                                </div> */}
                                 <div className="col-12 col-md text-md-right">
-                                    {/* <div className="rating text-dark h6 mb-4 mb-md-0" data-value={4}>
-                                        <div className="rating-item">
-                                            <i className="fas fa-star" />
-                                        </div>
-                                        <div className="rating-item">
-                                            <i className="fas fa-star" />
-                                        </div>
-                                        <div className="rating-item">
-                                            <i className="fas fa-star" />
-                                        </div>
-                                        <div className="rating-item">
-                                            <i className="fas fa-star" />
-                                        </div>
-                                        <div className="rating-item">
-                                            <i className="fas fa-star" />
-                                        </div>
-                                    </div> */}
                                     <strong className="font-size-sm ml-2">Reviews ({reviews?.paginate?.count})</strong>
                                 </div>
                             </div>

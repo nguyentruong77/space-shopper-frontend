@@ -48,7 +48,7 @@ export const CartDrawer = ({ open, onClose }) => {
                         </div>
                         <div className="modal-body flex-grow-0 my-auto">
                             <div className="flex flex-col gap-4 items-center">
-                                <img width={150} src="./img/empty-cart.png" />
+                                <img width={150} src="/img/empty-cart.png" />
                                 <p className="mb-0">Không có sản phẩm nào trong giỏ hàng của bạn.</p>
                                 <Link to={PATH.Product} onClick={onClose} className="btn btn-dark min-w-[300px] text-center">Tiếp tục mua sắm</Link>
                             </div>
