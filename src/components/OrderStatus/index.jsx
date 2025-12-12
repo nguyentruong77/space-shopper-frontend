@@ -2,7 +2,7 @@ import { PATH } from '@/config'
 import { currency } from '@/utils'
 import moment from 'moment'
 import React from 'react'
-import { generatePath } from 'react-router-dom'
+import { generatePath, Link } from 'react-router-dom'
 
 const STATUS = {
     pending: 'Chờ xác nhận',

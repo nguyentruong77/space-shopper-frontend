@@ -1,4 +1,6 @@
+import { PATH } from '@/config'
 import React from 'react'
+import { Link } from 'react-router-dom'
 
 export const Footer = () => {
     return (
@@ -63,16 +65,16 @@ export const Footer = () => {
                             {/* Links */}
                             <ul className="list-unstyled mb-7 mb-sm-0">
                                 <li>
-                                    <a className="text-gray-300" href="./contact-us.html">Contact Us</a>
+                                    <Link className="text-gray-300" to={PATH.Contact}>Contact Us</Link>
                                 </li>
                                 <li>
-                                    <a className="text-gray-300" href="./faq.html">FAQs</a>
+                                    <a className="text-gray-300" href="#">FAQs</a>
                                 </li>
                                 <li>
                                     <a className="text-gray-300" data-toggle="modal" href="#modalSizeChart">Size Guide</a>
                                 </li>
                                 <li>
-                                    <a className="text-gray-300" href="./shipping-and-returns.html">Shipping &amp; Returns</a>
+                                    <a className="text-gray-300" href="#">Shipping &amp; Returns</a>
                                 </li>
                             </ul>
                         </div>
@@ -84,16 +86,16 @@ export const Footer = () => {
                             {/* Links */}
                             <ul className="list-unstyled mb-7 mb-sm-0">
                                 <li>
-                                    <a className="text-gray-300" href="./shop.html">Men's Shopping</a>
+                                    <a className="text-gray-300" href="#">Men's Shopping</a>
                                 </li>
                                 <li>
-                                    <a className="text-gray-300" href="./shop.html">Women's Shopping</a>
+                                    <a className="text-gray-300" href="#">Women's Shopping</a>
                                 </li>
                                 <li>
-                                    <a className="text-gray-300" href="./shop.html">Kids' Shopping</a>
+                                    <a className="text-gray-300" href="#">Kids' Shopping</a>
                                 </li>
                                 <li>
-                                    <a className="text-gray-300" href="./shop.html">Discounts</a>
+                                    <a className="text-gray-300" href="#">Discounts</a>
                                 </li>
                             </ul>
                         </div>
@@ -105,16 +107,16 @@ export const Footer = () => {
                             {/* Links */}
                             <ul className="list-unstyled mb-0">
                                 <li>
-                                    <a className="text-gray-300" href="./about.html">Our Story</a>
+                                    <a className="text-gray-300" href="#">Our Story</a>
                                 </li>
                                 <li>
-                                    <a className="text-gray-300" href="#!">Careers</a>
+                                    <a className="text-gray-300" href="#">Careers</a>
                                 </li>
                                 <li>
-                                    <a className="text-gray-300" href="#!">Terms &amp; Conditions</a>
+                                    <a className="text-gray-300" href="#">Terms &amp; Conditions</a>
                                 </li>
                                 <li>
-                                    <a className="text-gray-300" href="#!">Privacy &amp; Cookie policy</a>
+                                    <a className="text-gray-300" href="#">Privacy &amp; Cookie policy</a>
                                 </li>
                             </ul>
                         </div>
@@ -126,13 +128,13 @@ export const Footer = () => {
                             {/* Links */}
                             <ul className="list-unstyled mb-0">
                                 <li>
-                                    <a className="text-gray-300" href="#!">1-202-555-0105</a>
+                                    <a className="text-gray-300" href="#">1-202-555-0105</a>
                                 </li>
                                 <li>
-                                    <a className="text-gray-300" href="#!">1-202-555-0106</a>
+                                    <a className="text-gray-300" href="#">1-202-555-0106</a>
                                 </li>
                                 <li>
-                                    <a className="text-gray-300" href="#!">help@shopper.com</a>
+                                    <a className="text-gray-300" href="#">help@shopper.com</a>
                                 </li>
                             </ul>
                         </div>

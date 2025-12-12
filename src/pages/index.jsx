@@ -2,6 +2,7 @@ import React from 'react'
 import { Slider } from '@/components/Slider'
 import { Tab } from '@/components/Tab'
 import { ListProduct } from '@/components/ListProduct'
+import { Helmet } from 'react-helmet'
 
 export default function HomePage() {
     return (
@@ -39,7 +40,7 @@ export default function HomePage() {
                                 </div>
                                 <div className="card-body mt-auto py-8">
                                     {/* Button */}
-                                    <a className="btn btn-white stretched-link" href="shop.html">
+                                    <a className="btn btn-white stretched-link" href="#">
                                         Shop Women <i className="fe fe-arrow-right ml-2" />
                                     </a>
                                 </div>
@@ -56,7 +57,7 @@ export default function HomePage() {
                                 </div>
                                 <div className="card-body mt-auto py-8">
                                     {/* Button */}
-                                    <a className="btn btn-white stretched-link" href="shop.html">
+                                    <a className="btn btn-white stretched-link" href="#">
                                         Shop Men <i className="fe fe-arrow-right ml-2" />
                                     </a>
                                 </div>
@@ -73,7 +74,7 @@ export default function HomePage() {
                                 </div>
                                 <div className="card-body mt-auto py-8">
                                     {/* Button */}
-                                    <a className="btn btn-white stretched-link" href="shop.html">
+                                    <a className="btn btn-white stretched-link" href="#">
                                         Shop Kids <i className="fe fe-arrow-right ml-2" />
                                     </a>
                                 </div>
@@ -190,7 +191,7 @@ export default function HomePage() {
                                         {/* Heading */}
                                         <h4 className="mb-0">Bags Collection</h4>
                                         {/* Link */}
-                                        <a className="btn btn-link stretched-link text-reset" href="shop.html">
+                                        <a className="btn btn-link stretched-link text-reset" href="#">
                                             Shop Now <i className="fe fe-arrow-right ml-2" />
                                         </a>
                                     </div>
@@ -213,7 +214,7 @@ export default function HomePage() {
                                         {/* Heading */}
                                         <h4 className="mb-0">Printed men’s Shirts</h4>
                                         {/* Link */}
-                                        <a className="btn btn-link stretched-link px-0 text-reset" href="shop.html">
+                                        <a className="btn btn-link stretched-link px-0 text-reset" href="#">
                                             Shop Now <i className="fe fe-arrow-right ml-2" />
                                         </a>
                                     </div>
@@ -231,7 +232,7 @@ export default function HomePage() {
                                         {/* Heading */}
                                         <h4 className="mb-0">Basic women’s Dresses</h4>
                                         {/* Link */}
-                                        <a className="btn btn-link stretched-link px-0 text-reset" href="shop.html">
+                                        <a className="btn btn-link stretched-link px-0 text-reset" href="#">
                                             Shop Now <i className="fe fe-arrow-right ml-2" />
                                         </a>
                                     </div>
@@ -249,7 +250,7 @@ export default function HomePage() {
                                         {/* Heading */}
                                         <h4 className="mb-0">Sweatshirts</h4>
                                         {/* Link */}
-                                        <a className="btn btn-link stretched-link text-reset" href="shop.html">
+                                        <a className="btn btn-link stretched-link text-reset" href="#">
                                             Shop Now <i className="fe fe-arrow-right ml-2" />
                                         </a>
                                     </div>
@@ -259,7 +260,7 @@ export default function HomePage() {
                     </div>
                 </section>
                 {/* TOP SELLERS */}
-                <Tab removeOnDeActive defaultActive="do-dien-tu">
+                <Tab removeOnDeActive defaultActive="do-dien-tu" onSearchChange={undefined} >
                     <section className="py-12">
                         <div className="container">
                             <div className="row justify-content-center">
@@ -326,7 +327,7 @@ export default function HomePage() {
                                     </div>
                                 </div>
                                 {/* Button */}
-                                <a className="btn btn-dark" href="shop.html">
+                                <a className="btn btn-dark" href="#">
                                     Mua ngay <i className="fe fe-arrow-right ml-2" />
                                 </a>
                             </div>
@@ -365,11 +366,11 @@ export default function HomePage() {
                                                     </div>
                                                     <div className="col-8 ml-n2">
                                                         {/* Preheading */}
-                                                        <a className="font-size-xs text-muted" href="shop.html">
+                                                        <a className="font-size-xs text-muted" href="#">
                                                             Shoes
                                                         </a>
                                                         {/* Heading */}
-                                                        <a className="d-block font-weight-bold text-body" href="product.html">
+                                                        <a className="d-block font-weight-bold text-body" href="#">
                                                             Low top Sneakers
                                                         </a>
                                                         {/* Rating */}
@@ -417,11 +418,11 @@ export default function HomePage() {
                                                     </div>
                                                     <div className="col-8 ml-n2">
                                                         {/* Preheading */}
-                                                        <a className="font-size-xs text-muted" href="shop.html">
+                                                        <a className="font-size-xs text-muted" href="#">
                                                             Dresses
                                                         </a>
                                                         {/* Heading */}
-                                                        <a className="d-block font-weight-bold text-body" href="product.html">
+                                                        <a className="d-block font-weight-bold text-body" href="#">
                                                             Cotton print Dress
                                                         </a>
                                                         {/* Rating */}
@@ -470,11 +471,11 @@ export default function HomePage() {
                                                     </div>
                                                     <div className="col-8 ml-n2">
                                                         {/* Preheading */}
-                                                        <a className="font-size-xs text-muted" href="shop.html">
+                                                        <a className="font-size-xs text-muted" href="#">
                                                             T-shirts
                                                         </a>
                                                         {/* Heading */}
-                                                        <a className="d-block font-weight-bold text-body" href="product.html">
+                                                        <a className="d-block font-weight-bold text-body" href="#">
                                                             Oversized print T-shirt
                                                         </a>
                                                         {/* Rating */}
@@ -522,11 +523,11 @@ export default function HomePage() {
                                                     </div>
                                                     <div className="col-8 ml-n2">
                                                         {/* Preheading */}
-                                                        <a className="font-size-xs text-muted" href="shop.html">
+                                                        <a className="font-size-xs text-muted" href="#">
                                                             Bags &amp; Accessories
                                                         </a>
                                                         {/* Heading */}
-                                                        <a className="d-block font-weight-bold text-body" href="product.html">
+                                                        <a className="d-block font-weight-bold text-body" href="#">
                                                             Suede cross body Bag
                                                         </a>
                                                         {/* Rating */}
@@ -587,7 +588,7 @@ export default function HomePage() {
                                     {/* Image */}
                                     <img src="/img/products/product-16.jpg" alt="..." className="card-img" />
                                     {/* Overlay */}
-                                    <a className="card-img-overlay card-img-overlay-hover align-items-center bg-dark-40" href="blog-post.html">
+                                    <a className="card-img-overlay card-img-overlay-hover align-items-center bg-dark-40" href="#">
                                         <p className="my-0 font-size-xxs text-center text-white">
                                             <i className="fe fe-heart mr-2" /> 248 <i className="fe fe-message-square mr-2 ml-3" /> 7
                                         </p>
@@ -600,7 +601,7 @@ export default function HomePage() {
                                     {/* Image */}
                                     <img src="/img/products/product-17.jpg" alt="..." className="card-img" />
                                     {/* Overlay */}
-                                    <a className="card-img-overlay card-img-overlay-hover align-items-center bg-dark-40" href="blog-post.html">
+                                    <a className="card-img-overlay card-img-overlay-hover align-items-center bg-dark-40" href="#">
                                         <p className="my-0 font-size-xxs text-center text-white">
                                             <i className="fe fe-heart mr-2" /> 248 <i className="fe fe-message-square mr-2 ml-3" /> 7
                                         </p>
@@ -613,7 +614,7 @@ export default function HomePage() {
                                     {/* Image */}
                                     <img src="/img/products/product-18.jpg" alt="..." className="card-img" />
                                     {/* Overlay */}
-                                    <a className="card-img-overlay card-img-overlay-hover align-items-center bg-dark-40" href="blog-post.html">
+                                    <a className="card-img-overlay card-img-overlay-hover align-items-center bg-dark-40" href="#">
                                         <p className="my-0 font-size-xxs text-center text-white">
                                             <i className="fe fe-heart mr-2" /> 248 <i className="fe fe-message-square mr-2 ml-3" /> 7
                                         </p>
@@ -626,7 +627,7 @@ export default function HomePage() {
                                     {/* Image */}
                                     <img src="/img/products/product-19.jpg" alt="..." className="card-img" />
                                     {/* Overlay */}
-                                    <a className="card-img-overlay card-img-overlay-hover align-items-center bg-dark-40" href="blog-post.html">
+                                    <a className="card-img-overlay card-img-overlay-hover align-items-center bg-dark-40" href="#">
                                         <p className="my-0 font-size-xxs text-center text-white">
                                             <i className="fe fe-heart mr-2" /> 248 <i className="fe fe-message-square mr-2 ml-3" /> 7
                                         </p>
@@ -639,7 +640,7 @@ export default function HomePage() {
                                     {/* Image */}
                                     <img src="/img/products/product-20.jpg" alt="..." className="card-img" />
                                     {/* Overlay */}
-                                    <a className="card-img-overlay card-img-overlay-hover align-items-center bg-dark-40" href="blog-post.html">
+                                    <a className="card-img-overlay card-img-overlay-hover align-items-center bg-dark-40" href="#">
                                         <p className="my-0 font-size-xxs text-center text-white">
                                             <i className="fe fe-heart mr-2" /> 248 <i className="fe fe-message-square mr-2 ml-3" /> 7
                                         </p>
@@ -652,7 +653,7 @@ export default function HomePage() {
                                     {/* Image */}
                                     <img src="/img/products/product-21.jpg" alt="..." className="card-img" />
                                     {/* Overlay */}
-                                    <a className="card-img-overlay card-img-overlay-hover align-items-center bg-dark-40" href="blog-post.html">
+                                    <a className="card-img-overlay card-img-overlay-hover align-items-center bg-dark-40" href="#">
                                         <p className="my-0 font-size-xxs text-center text-white">
                                             <i className="fe fe-heart mr-2" /> 248 <i className="fe fe-message-square mr-2 ml-3" /> 7
                                         </p>

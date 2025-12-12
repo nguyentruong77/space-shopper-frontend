@@ -241,25 +241,6 @@ export const Checkout = () => {
                                             {
                                                 listItems?.map(e => <CartItem className="px-0" hideAction key={e.productId} {...e} footer={<>x {e.quantity} = {currency(e.price)}</>} />)
                                             }
-                                            {/* <li className="list-group-item px-0">
-                                                <div className="row align-items-center">
-                                                    <div className="col-4">
-                                                        <a href="./product.html">
-                                                            <img className="img-fluid" src="./img/products/product-10.jpg" alt="..." />
-                                                        </a>
-                                                    </div>
-                                                    <div className="col-8">
-                                                        <p className="font-size-sm mb-6">
-                                                            <a className="text-body" href="./product.html">Suede cross body Bag</a> <br />
-                                                            <span className="card-product-price">
-                                                                <span className="sale text-primary">45,000</span>
-                                                                <span className="text-muted line-through ml-1 inline-block">60,000</span>
-                                                            </span> <br />
-                                                            x 3 = 135,000 <u>vnđ</u>
-                                                        </p>
-                                                    </div>
-                                                </div>
-                                            </li> */}
                                         </ul>
                                     </div>
                                 </div>

@@ -209,9 +209,6 @@ export const AccountPage = () => {
                                             <div className="col-12">
                                                 {/* Button */}
                                                 <Button loading={registerLoading} onClick={onRegister}>Register</Button>
-                                                {/* <a href="./account-personal-info.html" className="btn btn-sm btn-dark" type="submit">
-                                                    Register
-                                                </a> */}
                                             </div>
                                         </div>
                                     </div>

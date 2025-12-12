@@ -1,14 +1,12 @@
-import { withListLoading } from '@/utils/withListLoading'
-import React, { useRef } from 'react'
-import { Skeleton } from '../Skeleton'
-import { generatePath, Link } from 'react-router-dom'
 import { PATH } from '@/config'
-import moment from 'moment'
-import { handleError } from '@/utils'
-import { message } from 'antd'
-import { userService } from '@/services/user'
-import { PaymentCardStyle } from './PaymentCardStyle'
 import { useAction } from '@/hooks/useAction'
+import { userService } from '@/services/user'
+import { withListLoading } from '@/utils/withListLoading'
+import moment from 'moment'
+import { generatePath, Link } from 'react-router-dom'
+import { Button } from '../Button'
+import { Skeleton } from '../Skeleton'
+import { PaymentCardStyle } from './PaymentCardStyle'
 
 const PaymentCardLoading = () => {
     return (
@@ -47,14 +45,14 @@ export const PaymentCard = ({ onChangePaymentDefault, onDeletePayment, _id, type
         service: () => userService.editPayment(_id, { default: true }),
         loadingMessage: "Thao tác đang được thực hiện",
         successMessage: "Thay đổi thanh toán mặc định thành công",
-        onSuccess: onChangePaymentDefault?.()
+        onSuccess: () => onChangePaymentDefault?.()
     })
 
     const _onDeletePayment = useAction({
         service: () => userService.removePayment(_id),
         loadingMessage: "Đang xóa thanh toán",
         successMessage: "Xóa thanh toán thành công",
-        onSuccess: onDeletePayment?.(),
+        onSuccess: () => onDeletePayment?.(),
     })
 
     return (

@@ -9,7 +9,10 @@ import { Link } from 'react-router-dom'
 export const CartDrawer = ({ open, onClose }) => {
     const { cart } = useCart()
     return (
-        <Drawer width={470} onClose={onClose} open={open} headerStyle={{ display: 'none' }} bodyStyle={{ padding: 0 }}>
+        <Drawer size={470} onClose={onClose} open={open} styles={{
+            header: { display: 'none' },
+            body: { padding: 0 },
+        }}>
             {
                 cart?.listItems?.length > 0 ?
                     <div className="modal-content">

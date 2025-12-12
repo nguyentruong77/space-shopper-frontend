@@ -80,10 +80,10 @@ export const Header = () => {
                             {/* Nav */}
                             <ul className="nav navbar-nav mr-8">
                                 <li className="nav-item">
-                                    <a className="nav-link" href="./shipping-and-returns.html">Quy định giao hàng</a>
+                                    <a className="nav-link" href="#">Quy định giao hàng</a>
                                 </li>
                                 <li className="nav-item">
-                                    <a className="nav-link" href="./faq.html">Câu hỏi</a>
+                                    <a className="nav-link" href="#">Câu hỏi</a>
                                 </li>
                                 <li className="nav-item">
                                     <Link className="nav-link" to={PATH.Contact}>Liên hệ</Link>
@@ -158,9 +158,9 @@ export const Header = () => {
                                     </a>
                                 </li>
                                 <li className="nav-item ml-lg-n4">
-                                    <a className="nav-link" href="./account-wishlist.html">
+                                    <Link className="nav-link" to={PATH.Profile.Wishlist}>
                                         <i className="fe fe-heart" />
-                                    </a>
+                                    </Link>
                                 </li>
                                 <li className="nav-item ml-lg-n4">
                                     <Popover trigger={'click'} onOpenChange={(visible) => {

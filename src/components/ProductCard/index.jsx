@@ -32,7 +32,7 @@ const ProductCard = ({ className = "", onRemoveWishlistSuccess, showRemove, show
         service: () => productService.removeWishlist(id),
         loadingMessage: `Đang xóa sản phẩm "${name}" khỏi yêu thích`,
         successMessage: `Xóa sản phẩm "${name}" khỏi yêu thích thành công`,
-        onSuccess: onRemoveWishlistSuccess?.()
+        onSuccess: () => onRemoveWishlistSuccess?.()
     })
 
     const onAddCardItem = () => {
@@ -106,12 +106,12 @@ const ProductCard = ({ className = "", onRemoveWishlistSuccess, showRemove, show
                     {/* Category */}
                     <div className="card-product-category font-size-xs">
                         {
-                            category && <a className="text-muted" href="shop.html">{category.title}</a>
+                            category && <a className="text-muted" href="#">{category.title}</a>
                         }
                     </div>
                     {/* Title */}
                     <div className="card-product-title font-weight-bold">
-                        <a className="text-body card-product-name" href="product.html">{name}</a>
+                        <a className="text-body card-product-name" href="#">{name}</a>
                     </div>
                     <div className="card-product-rating">
                         {
@@ -148,7 +148,7 @@ const ProductCardLoading = ({ className }) => {
                 {/* Image */}
                 <div className="card-img">
                     {/* Image */}
-                    <a className="card-img-hover" href="product.html">
+                    <a className="card-img-hover" href="#">
                         <Skeleton height={300} />
                     </a>
                 </div>
@@ -156,11 +156,11 @@ const ProductCardLoading = ({ className }) => {
                 <div className="card-body px-0">
                     {/* Category */}
                     <div className="card-product-category font-size-xs">
-                        <a className="text-muted" href="shop.html"><Skeleton height="100%" width={150} /></a>
+                        <a className="text-muted" href="#"><Skeleton height="100%" width={150} /></a>
                     </div>
                     {/* Title */}
                     <div className="card-product-title font-weight-bold">
-                        <a className='text-body card-product-name' href='product.html'><Skeleton height="100%" /></a>
+                        <a className='text-body card-product-name' href='#'><Skeleton height="100%" /></a>
                     </div>
                     {/* Rating */}
                     <div className="card-product-rating">

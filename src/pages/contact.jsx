@@ -96,7 +96,7 @@ export const ContactPage = () => {
                             </p>
                             {/* Button */}
                             <p className="mb-0">
-                                <a className="btn btn-link px-0 text-body" href="store-locator.html">
+                                <a className="btn btn-link px-0 text-body" href="#">
                                     Go to Store Locator <i className="fe fe-arrow-right ml-2" />
                                 </a>
                             </p>

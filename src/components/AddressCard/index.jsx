@@ -1,15 +1,13 @@
-import React, { useRef } from 'react'
-import { Skeleton } from '../Skeleton'
-import { withLoading } from '@/utils/withLoading'
-import { withListLoading } from '@/utils/withListLoading'
-import { Button } from '../Button'
-import { AddressCardStyle } from './style'
-import { cn, handleError } from '@/utils'
-import { userService } from '@/services/user'
-import { message } from 'antd'
-import { generatePath, Link } from 'react-router-dom'
 import { PATH } from '@/config'
 import { useAction } from '@/hooks/useAction'
+import { userService } from '@/services/user'
+import { cn } from '@/utils'
+import { withListLoading } from '@/utils/withListLoading'
+import { withLoading } from '@/utils/withLoading'
+import { generatePath, Link } from 'react-router-dom'
+import { Button } from '../Button'
+import { Skeleton } from '../Skeleton'
+import { AddressCardStyle } from './style'
 
 const AddressCardLoading = () => {
     return (
@@ -37,13 +35,13 @@ export const AddressCard = withLoading(({ onClick, action, className, hideAction
         service: () => userService.editAddress(_id, { default: true }),
         loadingMessage: "Thao tác đang được thực hiện",
         successMessage: "Thay đổi địa chỉ mặc định thành công",
-        onSuccess: onChangeAddressDefault?.()
+        onSuccess: () => onChangeAddressDefault?.()
     })
     const _onDeleteAddress = useAction({
         service: () => userService.removeAddress(_id),
         loadingMessage: "Đang xóa địa chỉ",
         successMessage: "Xóa địa chỉ thành công",
-        onSuccess: onDeleteAddress?.()
+        onSuccess: () => onDeleteAddress?.()
     })
 
     return (
@@ -53,7 +51,7 @@ export const AddressCard = withLoading(({ onClick, action, className, hideAction
                 <div className="card-body">
                     {/* Text */}
                     <p className="font-size-sm mb-0 leading-[35px]">
-                        <a className="text-body text-xl font-bold " href="./product.html">{fullName}</a> <br />
+                        <a className="text-body text-xl font-bold " href="#">{fullName}</a> <br />
                         <b>Số điện thoại:</b> {phone} <br />
                         <b>Email:</b>{email}<br />
                         <b>Quận / Huyện:</b> {district} <br />

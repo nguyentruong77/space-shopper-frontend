@@ -41,7 +41,6 @@ export function* loginByCode(action) {
     setUser(user.data);
     return user.data;
   } catch (error) {
-    console.log(error);
     throw error.response.data;
   }
 }

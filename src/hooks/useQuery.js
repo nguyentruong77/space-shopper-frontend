@@ -92,7 +92,6 @@ export const useQuery = ({
         if (!res) return;
       }
     } catch (err) {
-      console.log(err);
       error = err;
     }
     const endTime = Date.now();

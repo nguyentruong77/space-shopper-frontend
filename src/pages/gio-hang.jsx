@@ -127,7 +127,7 @@ export const ViewCart = () => {
                                         {/* Button */}
                                         <Link className={cn("btn btn-block btn-dark mb-2", { disabled: !preCheckoutResponse?.length })} to={PATH.Checkout}>Proceed to Checkout</Link>
                                         {/* Link */}
-                                        <a className="btn btn-link btn-sm px-0 text-body" href="shop.html">
+                                        <a className="btn btn-link btn-sm px-0 text-body" href="#">
                                             <i className="fe fe-arrow-left mr-2" /> Continue Shopping
                                         </a>
                                     </div>

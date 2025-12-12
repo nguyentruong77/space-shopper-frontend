@@ -157,12 +157,12 @@ export const OrderDetailPage = () => {
                                 <div className="row align-items-center">
                                     <div className="col-4 col-md-3 col-xl-2">
                                         {/* Image */}
-                                        <a href="product.html"><img src={e.product.thumbnail_url} alt={e.product.name} className="img-fluid" /></a>
+                                        <Link to={`/${e.product.slug}`}><img src={e.product.thumbnail_url} alt={e.product.name} className="img-fluid" /></Link>
                                     </div>
                                     <div className="col">
                                         {/* Title */}
                                         <p className="mb-4 font-size-sm font-weight-bold">
-                                            <a className="text-body" href="product.html">{e.product.name} x {e.quantity}</a> <br />
+                                            <Link className="text-body" to={`/${e.product.slug}`}>{e.product.name} x {e.quantity}</Link> <br />
                                             <span className="text-muted">{currency(e.product.real_price)}</span>
                                         </p>
                                         <div className="card-right-info flex flex-col gap-2">

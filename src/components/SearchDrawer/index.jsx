@@ -33,7 +33,10 @@ export const SearchDrawer = ({ open, onClose }) => {
     })
     const linkViewAll = (category ? generatePath(PATH.Category, { slug: slugify(category.title), id: category.id }) : PATH.Product) + `?${qs}`
     return (
-        <Drawer width={470} onClose={onClose} open={open} headerStyle={{ display: 'none' }} bodyStyle={{ padding: 0 }}>
+        <Drawer size={470} onClose={onClose} open={open} styles={{
+            header: { display: 'none' },
+            body: { padding: 0 },
+        }}>
             <div className="modal-content">
                 {/* Close */}
                 <button type="button" onClick={onClose} className="close !outline-none" data-dismiss="modal" aria-label="Close">
@@ -107,7 +110,7 @@ const SearchItem = ({ name, real_price, price, thumbnail_url }) => {
         <div className="col position-static">
             {/* Text */}
             <p className="mb-0 font-weight-bold">
-                <a className="stretched-link text-body" href="./product.html">{name}</a> <br />
+                <a className="stretched-link text-body" href="#">{name}</a> <br />
             </p><div className="card-product-price">
                 {
                     real_price < price ? <>

@@ -118,7 +118,7 @@ export const ListOrder = ({ status }) => {
     })
     const { data, loading } = useQuery({
         queryKey: [qs],
-        queryFn: () => orderService.getOrder(qs)
+        queryFn: () => orderService.getOrder(`?${qs}`)
     })
     return (
         <>
@@ -127,7 +127,7 @@ export const ListOrder = ({ status }) => {
                 loading={loading}
                 loadingCount={5}
                 empty={<div className="flex items-center flex-col gap-5 text-center">
-                    <img width={200} src="./img/empty-order.png" alt />
+                    <img width={200} src="/img/empty-order.png" alt />
                     <p>Chưa có đơn hàng nào</p>
                 </div>}
             />

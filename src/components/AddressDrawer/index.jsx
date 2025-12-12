@@ -15,7 +15,11 @@ export const AddressDrawer = ({ onSelect, selected, open, onClose }) => {
         }
     })
     return (
-        <Drawer width={470} onClose={onClose} open={open} headerStyle={{ display: 'none' }} bodyStyle={{ padding: 0 }}>
+        <Drawer size={470} onClose={onClose} open={open}
+            styles={{
+                header: { display: 'none' },
+                body: { padding: 0 },
+            }}>
             <div className="modal-content">
                 {/* Close */}
                 <button type="button" className="close !outline-none" data-dismiss="modal" aria-label="Close">

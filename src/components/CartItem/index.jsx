@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { PopConfirm } from '../PopConfirm'
 import { Checkbox } from '../checkout'
+import { Link } from 'react-router-dom'
 
 export const CartItem = ({ footer, hideAction, allowSelect, productId, product, quantity, ...props }) => {
     const dispatch = useDispatch()
@@ -55,7 +56,7 @@ export const CartItem = ({ footer, hideAction, allowSelect, productId, product, 
                     <div className="flex-1 px-2">
                         {/* Title */}
                         <p className="font-size-sm mb-6">
-                            <a className="text-body" href="./product.html">{product.name}</a> <br />
+                            <Link className="text-body" to={`/${product.slug}`}>{product.name}</Link> <br />
                             <span className="card-product-price">
                                 {
                                     product.real_price < product.price ?

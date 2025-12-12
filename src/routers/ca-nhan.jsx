@@ -15,7 +15,7 @@ export const profile = [
         children: [
             {
                 element: <ProfilePage />,
-                index: true,
+                //index: true,
                 path: PATH.Profile.index,
                 handle: { title: "Thông tin cá nhân" },
             },

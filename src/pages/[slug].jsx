@@ -170,7 +170,7 @@ export const ProductDetailPage = () => {
                                     <div className="row mb-1">
                                         <div className="col">
                                             {/* Preheading */}
-                                            <a className="text-muted" href="shop.html">{category?.title}</a>
+                                            <a className="text-muted" href="#">{category?.title}</a>
                                         </div>
                                         <div className="col-auto flex items-center">
                                             {/* Rating */}

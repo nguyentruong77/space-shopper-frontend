@@ -187,7 +187,7 @@ export const ProductPage = () => {
                                                 <h4>
                                                     2019 Summer Collection
                                                 </h4>
-                                                <a className="btn btn-link px-0 text-body" href="shop.html">
+                                                <a className="btn btn-link px-0 text-body" href="#">
                                                     View Collection <i className="fe fe-arrow-right ml-2" />
                                                 </a>
                                             </div>
@@ -206,7 +206,7 @@ export const ProductPage = () => {
                                                     Appear, dry there darkness they're seas. <br />
                                                     <strong className="text-primary">Use code 4GF5SD</strong>
                                                 </p>
-                                                <a className="btn btn-outline-dark" href="shop.html">
+                                                <a className="btn btn-outline-dark" href="#">
                                                     Shop Now <i className="fe fe-arrow-right ml-2" />
                                                 </a>
                                             </div>
@@ -221,7 +221,7 @@ export const ProductPage = () => {
                                             <div className="card-body px-md-10 py-11 text-center text-white">
                                                 <p className="text-uppercase">Enjoy an extra</p>
                                                 <h1 className="display-4 text-uppercase">50% off</h1>
-                                                <a className="link-underline text-reset" href="shop.html">Shop Collection</a>
+                                                <a className="link-underline text-reset" href="#">Shop Collection</a>
                                             </div>
                                         </div>
                                     </div>
