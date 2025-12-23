@@ -14,6 +14,8 @@ import { Checkout } from "@/pages/checkout";
 import { OrderComplete } from "@/pages/dat-hang-thanh-cong";
 import { ResetPasswordPage } from "@/pages/reset-password";
 import { ContactPage } from "@/pages/contact";
+import { FAQPage } from "@/pages/cau-hoi-thuong-gap";
+import { ShippingAndReturnPage } from "@/pages/quy-dinh-giao-hang-va-tra-hang";
 
 const routes = [
     {
@@ -50,6 +52,14 @@ const routes = [
             {
                 element: <ContactPage />,
                 path: PATH.Contact,
+            },
+            {
+                element: <FAQPage />,
+                path: PATH.FAQ,
+            },
+            {
+                element: <ShippingAndReturnPage />,
+                path: PATH.ShippingAndReturn,
             },
             {
                 element: <PrivateRoute redirect={PATH.Account} />,

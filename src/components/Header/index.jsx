@@ -80,10 +80,10 @@ export const Header = () => {
                             {/* Nav */}
                             <ul className="nav navbar-nav mr-8">
                                 <li className="nav-item">
-                                    <a className="nav-link" href="#">Quy định giao hàng</a>
+                                    <Link className="nav-link" to={PATH.ShippingAndReturn}>Quy định giao hàng và trả hàng</Link>
                                 </li>
                                 <li className="nav-item">
-                                    <a className="nav-link" href="#">Câu hỏi</a>
+                                    <Link className="nav-link" to={PATH.FAQ}>Câu hỏi</Link>
                                 </li>
                                 <li className="nav-item">
                                     <Link className="nav-link" to={PATH.Contact}>Liên hệ</Link>

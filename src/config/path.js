@@ -23,4 +23,6 @@ export const PATH = {
   Account: "/tai-khoan",
   ResetPassword: "/reset-password",
   Contact: "/lien-he",
+  FAQ: "/cau-hoi-thuong-gap",
+  ShippingAndReturn: "/quy-dinh-giao-hang-va-tra-hang",
 };
